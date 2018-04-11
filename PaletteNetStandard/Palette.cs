@@ -29,7 +29,10 @@ namespace PaletteNetStandard
 
         private readonly Swatch mDominantSwatch;
 
-        const int DefaultColor = -1;
+        /// <summary>
+        /// White
+        /// </summary>
+        const int DefaultColorValue = -1;
        
         public Palette(List<Swatch> swatches, List<Target> targets)
         {
@@ -48,23 +51,23 @@ namespace PaletteNetStandard
         }
 
         #region Getters
-        /// <summary>
-        /// Returns all of the swatches which make up the palette.
-        /// </summary>
-        /// <returns></returns>
-        public IReadOnlyCollection<Swatch> GetSwatches()
-        {
-            return mSwatches.AsReadOnly();
-        }
+        ///// <summary>
+        ///// Returns all of the swatches which make up the palette.
+        ///// </summary>
+        ///// <returns></returns>
+        //public IReadOnlyCollection<Swatch> GetSwatches()
+        //{
+        //    return mSwatches.AsReadOnly();
+        //}
 
-        /// <summary>
-        /// Returns the targets used to generate this palette.
-        /// </summary>
-        /// <returns></returns>
-        public IReadOnlyCollection<Target> GetTargets()
-        {
-            return mTargets.AsReadOnly();
-        }
+        ///// <summary>
+        ///// Returns the targets used to generate this palette.
+        ///// </summary>
+        ///// <returns></returns>
+        //public IReadOnlyCollection<Target> GetTargets()
+        //{
+        //    return mTargets.AsReadOnly();
+        //}
 
         /// <summary>
         /// Returns the most vibrant swatch in the palette. Might be null.
@@ -125,7 +128,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetVibrantColor(int defaultColor = DefaultColor)
+        public int GetVibrantColorValue(int defaultColor = DefaultColorValue)
         {
             return GetColorForTarget(Target.VIBRANT, defaultColor);
         }
@@ -135,7 +138,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetLightVibrantColor(int defaultColor = DefaultColor)
+        public int GetLightVibrantColorValue(int defaultColor = DefaultColorValue)
         {
             return GetColorForTarget(Target.LIGHT_VIBRANT, defaultColor);
         }
@@ -145,7 +148,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetDarkVibrantColor(int defaultColor = DefaultColor)
+        public int GetDarkVibrantColorValue(int defaultColor = DefaultColorValue)
         {
             return GetColorForTarget(Target.DARK_VIBRANT, defaultColor);
         }
@@ -155,7 +158,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetMutedColor(int defaultColor = DefaultColor)
+        public int GetMutedColorValue(int defaultColor = DefaultColorValue)
         {
             return GetColorForTarget(Target.MUTED, defaultColor);
         }
@@ -165,7 +168,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetLightMutedColor(int defaultColor = DefaultColor)
+        public int GetLightMutedColorValue(int defaultColor = DefaultColorValue)
         {
             return GetColorForTarget(Target.LIGHT_MUTED, defaultColor);
         }
@@ -175,7 +178,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetDarkMutedColor(int defaultColor = DefaultColor)
+        public int GetDarkMutedColorValue(int defaultColor = DefaultColorValue)
         {
             return GetColorForTarget(Target.DARK_MUTED, defaultColor);
         }
@@ -197,7 +200,7 @@ namespace PaletteNetStandard
         /// <param name="target"></param>
         /// <param name="defaultColor"></param>
         /// <returns></returns>
-        public int GetColorForTarget(Target target, int defaultColor = DefaultColor)
+        public int GetColorForTarget(Target target, int defaultColor = DefaultColorValue)
         {
             Swatch swatch = GetSwatchForTarget(target);
             return swatch != null ? swatch.GetRgb() : defaultColor;
@@ -219,7 +222,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetDominantColor(int defaultColor = DefaultColor)
+        public int GetDominantColorValue(int defaultColor = DefaultColorValue)
         {
             return mDominantSwatch != null ? mDominantSwatch.GetRgb() : defaultColor;
         }
