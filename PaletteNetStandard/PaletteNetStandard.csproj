@@ -1,7 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <Authors>Tomasz Walecki</Authors>
+    <PackageId>PaletteNet</PackageId>
+    <Product>PaletteNet</Product>
+    <Description>.NET port of Android's Palette</Description>
+    <PackageTags>palette image color</PackageTags>
+    <PackageProjectUrl>https://github.com/tmk907/PaletteNetStandard</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/tmk907/PaletteNetStandard/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/tmk907/PaletteNetStandard</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
