@@ -13,14 +13,14 @@ namespace PaletteNetStandard.Desktop
 
         private Bitmap bitmap;
 
-
         public BitmapHelper(Bitmap bitmap)
         {
             this.bitmap = bitmap;
         }
 
-        public int[] GetPixelsFromBitmap()
+        public int[] ScaleDownAndGetPixels()
         {
+            ScaleBitmapDown();
             BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
             int bytesPerPixel = Bitmap.GetPixelFormatSize(bitmap.PixelFormat) / 8;
             int byteCount = bitmapData.Stride * bitmap.Height;
@@ -37,7 +37,7 @@ namespace PaletteNetStandard.Desktop
             return subsetPixels;
         }
 
-        public void ScaleBitmapDown()
+        private void ScaleBitmapDown()
         {
             double scaleRatio = -1;
 

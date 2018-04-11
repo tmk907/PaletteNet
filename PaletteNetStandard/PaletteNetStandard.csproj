@@ -12,4 +12,9 @@
     <RepositoryUrl>https://github.com/tmk907/PaletteNetStandard</RepositoryUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="PaletteNetStandard.1.0.0.nupkg" />
+    <None Remove="PaletteNetStandard.nuspec" />
+  </ItemGroup>
+
 </Project>
