@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>PaletteNetStandard.Desktop</id>
+    <version>1.0</version>
+    <title>PaletteNetStandard.Desktop</title>
+    <authors>Tomasz Walecki</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/tmk907/PaletteNetStandard/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/tmk907/PaletteNetStandard</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET port of Android's Palette This library contains bitmap helper for .NET 4.5</description>
+    <tags>palette image color</tags>
+	<dependencies>
+    <group targetFramework="netstandard1.0">
+        <dependency id="PaletteNetStandard" version="1.0" />
+    </group>
+</dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\PaletteNetStandard.Desktop.dll" target="lib\net45\PaletteNetStandard.Desktop.dll" />
+	<file src="bin\Release\PaletteNetStandard.Desktop.pdb" target="lib\net45\PaletteNetStandard.Desktop.pdb" />
+</files>
+</package>

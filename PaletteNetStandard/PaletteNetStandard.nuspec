@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>PaletteNetStandard</id>
+    <version>1.0</version>
+    <title>PaletteNetStandard</title>
+    <authors>Tomasz Walecki</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/tmk907/PaletteNetStandard/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/tmk907/PaletteNetStandard</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET port of Android's Palette</description>
+    <tags>palette image color</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\netstandard1.0\PaletteNetStandard.dll" target="lib\netstandard1.0\PaletteNetStandard.dll" />
+	<file src="bin\Release\netstandard1.0\PaletteNetStandard.pdb" target="lib\netstandard1.0\PaletteNetStandard.pdb" />
+</files>
+</package>
