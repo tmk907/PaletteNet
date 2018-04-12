@@ -6,9 +6,10 @@ namespace PaletteNetStandard.UWP
     public class WriteableBitmapHelper : IBitmapHelper
     {
         const int DEFAULT_RESIZE_BITMAP_AREA = 112 * 112;
-        private WriteableBitmap bitmap;
         private int mResizeArea = DEFAULT_RESIZE_BITMAP_AREA;
         private int mResizeMaxDimension = -1;
+
+        private WriteableBitmap bitmap;
 
         public WriteableBitmapHelper(WriteableBitmap bitmap)
         {

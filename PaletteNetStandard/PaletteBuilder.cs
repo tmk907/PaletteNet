@@ -22,7 +22,7 @@ namespace PaletteNetStandard
     /// <summary>
     /// Builder class for generating Palette instances.
     /// </summary>
-    public sealed class Builder
+    public sealed class PaletteBuilder
     {
         /**
          * The default filter.
@@ -31,26 +31,15 @@ namespace PaletteNetStandard
 
         static readonly int DEFAULT_CALCULATE_NUMBER_COLORS = 16;
 
-        private readonly IBitmapHelper bitmapHelper;
-
         private readonly List<Target> mTargets = new List<Target>();
 
         private int mMaxColors = DEFAULT_CALCULATE_NUMBER_COLORS;
 
         private readonly List<IFilter> mFilters = new List<IFilter>();
 
-        /// <summary>
-        /// Construct a new Builder using a source WriteableBitmap
-        /// </summary>
-        /// <param name="bitmap"></param>
-        public Builder(IBitmapHelper bitmapHelper)
+        public PaletteBuilder()
         {
-            if (bitmapHelper == null)
-            {
-                throw new Exception("IBitmapHelper is not valid");
-            }
             mFilters.Add(DEFAULT_FILTER);
-            this.bitmapHelper = bitmapHelper;
 
             // Add the default targets
             mTargets.Add(Target.LIGHT_VIBRANT);
@@ -65,24 +54,23 @@ namespace PaletteNetStandard
         /// Generate and return the Palette synchronously.
         /// </summary>
         /// <returns></returns>
-        public Palette Generate()
+        public Palette Generate(IBitmapHelper bitmapHelper)
         {
-            List<Swatch> swatches;
-            // We have a WriteableBitmap so we need to use quantization to reduce the number of colors
-            // First we'll scale down the bitmap if needed
-            bitmapHelper.ScaleBitmapDown();
+            if (bitmapHelper == null)
+            {
+                throw new Exception("IBitmapHelper is not valid");
+            }
 
-            // Now generate a quantizer from the WriteableBitmap
+            List<Swatch> swatches;
+            var pixels = bitmapHelper.ScaleDownAndGetPixels();
             ColorCutQuantizer quantizer = new ColorCutQuantizer(
-                    bitmapHelper.GetPixelsFromBitmap(),
+                    pixels,
                     mMaxColors,
                     (mFilters.Count == 0) ? null : mFilters.ToArray());
 
             swatches = quantizer.GetQuantizedColors();
 
-            // Now create a Palette instance
             Palette p = new Palette(swatches, mTargets);
-            // And make it generate itself
             p.Generate();
             return p;
         }
@@ -96,7 +84,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="colors"></param>
         /// <returns></returns>
-        public Builder MaximumColorCount(int colors)
+        public PaletteBuilder MaximumColorCount(int colors)
         {
             mMaxColors = colors;
             return this;
@@ -108,7 +96,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="filter">filter filter to add.</param>
         /// <returns></returns>
-        public Builder AddFilter(IFilter filter)
+        public PaletteBuilder AddFilter(IFilter filter)
         {
             if (filter != null)
             {
@@ -121,7 +109,7 @@ namespace PaletteNetStandard
         /// Clear all added filters. This includes any default filters added automatically by Palette.
         /// </summary>
         /// <returns></returns>
-        public Builder ClearFilters()
+        public PaletteBuilder ClearFilters()
         {
             mFilters.Clear();
             return this;
@@ -133,7 +121,7 @@ namespace PaletteNetStandard
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public Builder AddTarget(Target target)
+        public PaletteBuilder AddTarget(Target target)
         {
             if (!mTargets.Contains(target))
             {
@@ -146,7 +134,7 @@ namespace PaletteNetStandard
         /// Clear all added targets. This includes any default targets added automatically by Palette
         /// </summary>
         /// <returns></returns>
-        public Builder ClearTargets()
+        public PaletteBuilder ClearTargets()
         {
             if (mTargets != null)
             {

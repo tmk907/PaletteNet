@@ -45,29 +45,25 @@ namespace PaletteNetStandard
             mDominantSwatch = FindDominantSwatch();
         }
 
-        public static Builder From(IBitmapHelper helper)
+        #region Getters
+
+        /// <summary>
+        /// Returns all of the swatches which make up the palette.
+        /// </summary>
+        /// <returns></returns>
+        public List<Swatch> GetSwatches()
         {
-            return new Builder(helper);
+            return new List<Swatch>(mSwatches);
         }
 
-        #region Getters
-        ///// <summary>
-        ///// Returns all of the swatches which make up the palette.
-        ///// </summary>
-        ///// <returns></returns>
-        //public IReadOnlyCollection<Swatch> GetSwatches()
-        //{
-        //    return mSwatches.AsReadOnly();
-        //}
-
-        ///// <summary>
-        ///// Returns the targets used to generate this palette.
-        ///// </summary>
-        ///// <returns></returns>
-        //public IReadOnlyCollection<Target> GetTargets()
-        //{
-        //    return mTargets.AsReadOnly();
-        //}
+        /// <summary>
+        /// Returns the targets used to generate this palette.
+        /// </summary>
+        /// <returns></returns>
+        public List<Target> GetTargets()
+        {
+            return new List<Target>(mTargets);
+        }
 
         /// <summary>
         /// Returns the most vibrant swatch in the palette. Might be null.

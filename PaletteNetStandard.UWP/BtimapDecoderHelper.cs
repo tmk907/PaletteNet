@@ -7,9 +7,10 @@ namespace PaletteNetStandard.UWP
     public class BtimapDecoderHelper : IBitmapHelper
     {
         const int DEFAULT_RESIZE_BITMAP_AREA = 112 * 112;
-        private BitmapDecoder decoder;
         private int mResizeArea = DEFAULT_RESIZE_BITMAP_AREA;
         private int mResizeMaxDimension = -1;
+
+        private BitmapDecoder decoder;
         private byte[] pixels;
 
         public BtimapDecoderHelper(BitmapDecoder decoder)
