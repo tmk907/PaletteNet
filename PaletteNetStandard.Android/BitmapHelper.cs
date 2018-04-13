@@ -61,10 +61,10 @@ namespace PaletteNetStandard.Android
             if (scaleRatio <= 0)
             {
                 // Scaling has been disabled or not needed so just return the Bitmap
-                return bitmap;
+                return;
             }
 
-            return Bitmap.CreateScaledBitmap(bitmap,
+            bitmap = Bitmap.CreateScaledBitmap(bitmap,
                     (int)Math.Ceiling(bitmap.Width * scaleRatio),
                     (int)Math.Ceiling(bitmap.Width * scaleRatio),
                     false);
