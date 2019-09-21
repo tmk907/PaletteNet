@@ -1,0 +1,40 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.43">
+  <PropertyGroup>
+    <TargetFrameworks>uap10.0.18362</TargetFrameworks>
+	
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageOutputPath>$(SolutionDir)/Artifacts</PackageOutputPath>
+	
+	<AssemblyName>PaletteNet.WriteableBitmapEx</AssemblyName>
+    <RootNamespace>PaletteNet.WriteableBitmapEx</RootNamespace>
+	
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	
+    <Authors>Tomasz Walecki</Authors>
+    <PackageId>PaletteNet.WriteableBitmapEx</PackageId>
+    <Product>PaletteNet.WriteableBitmapEx</Product>
+    <Description>.NET port of Android's Palette</Description>
+    <PackageTags>palette image color</PackageTags>
+    <PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net45')) ">
+    <Compile Include="**\*.wpf.cs" />
+    <Compile Include="**\*.wpf.*.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+    <Compile Include="**\*.uwp.cs" />
+    <Compile Include="**\*.uwp.*.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\PaletteNet\PaletteNet.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="WriteableBitmapEx" Version="1.6.2" />
+  </ItemGroup>
+</Project>

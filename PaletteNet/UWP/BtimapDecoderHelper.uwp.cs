@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 
-namespace PaletteNetStandard.UWP
+namespace PaletteNet.UWP
 {
     public class BtimapDecoderHelper : IBitmapHelper
     {

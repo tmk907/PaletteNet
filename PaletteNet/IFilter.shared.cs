@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace PaletteNetStandard
+namespace PaletteNet
 {
     /// <summary>
     /// A Filter provides a mechanism for exercising fine-grained control over which colors

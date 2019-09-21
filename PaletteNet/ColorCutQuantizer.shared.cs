@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PaletteNetStandard
+namespace PaletteNet
 {
     /**
      * An color quantizer based on the Median-cut algorithm, but optimized for picking out distinct

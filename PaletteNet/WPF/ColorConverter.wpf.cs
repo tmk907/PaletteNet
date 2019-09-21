@@ -1,6 +1,6 @@
-﻿using Windows.UI;
+﻿using System.Drawing;
 
-namespace PaletteNetStandard.UWP
+namespace PaletteNet.Desktop
 {
     public class ColorConverter
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace PaletteNetStandard.UWP
+namespace PaletteNet.WriteableBitmapEx
 {
     public class WriteableBitmapHelper : IBitmapHelper
     {

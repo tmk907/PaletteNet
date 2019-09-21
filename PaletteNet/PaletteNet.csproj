@@ -1,0 +1,46 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.43">
+  <PropertyGroup>
+    <TargetFrameworks>MonoAndroid90;uap10.0.18362;net45</TargetFrameworks>
+    
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageOutputPath>$(SolutionDir)/Artifacts</PackageOutputPath>
+	
+	<AssemblyName>PaletteNet</AssemblyName>
+    <RootNamespace>PaletteNet</RootNamespace>
+	
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	
+    <Authors>Tomasz Walecki</Authors>
+    <PackageId>PaletteNet</PackageId>
+    <Product>PaletteNet</Product>
+    <Description>.NET port of Android's Palette</Description>
+    <PackageTags>palette image color</PackageTags>
+    <PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="**\*.shared.cs" />
+    <Compile Include="**\*.shared.*.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net45')) ">
+    <Compile Include="**\*.wpf.cs" />
+    <Compile Include="**\*.wpf.*.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+    <Compile Include="**\*.uwp.cs" />
+    <Compile Include="**\*.uwp.*.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <Compile Include="**\*.android.cs" />
+    <Compile Include="**\*.android.*.cs" />
+    <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.1" />
+  </ItemGroup>
+
+</Project>

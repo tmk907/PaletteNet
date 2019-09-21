@@ -1,6 +1,6 @@
 ﻿using Android.Graphics;
 
-namespace PaletteNetStandard.Android
+namespace PaletteNet.Android
 {
     public class ColorConverter
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PaletteNetStandard
+namespace PaletteNet
 {
     public class ColorHelpers
     {

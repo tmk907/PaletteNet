@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PaletteNetStandard
+namespace PaletteNet
 {
     public abstract class Heap<T> : IEnumerable<T>
     {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace PaletteNetStandard
+namespace PaletteNet
 {
     /// <summary>
     /// Represents a color swatch generated from an image's palette.

@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PaletteNetStandard
+namespace PaletteNet
 {
     /// <summary>
     /// Builder class for generating Palette instances.

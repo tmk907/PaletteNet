@@ -1,4 +1,4 @@
-﻿namespace PaletteNetStandard
+﻿namespace PaletteNet
 {
     public interface IBitmapHelper
     {
