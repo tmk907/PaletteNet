@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI;
-using PaletteNetStandard;
-using PaletteNetStandard.UWP;
+using PaletteNet;
 using Windows.Graphics.Imaging;
+using PaletteNet.UWP;
 
 namespace PaletteNetStandardSample
 {
