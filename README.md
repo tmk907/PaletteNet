@@ -3,8 +3,13 @@
 
 ## Example
 ```c#
+var palette = PaletteHelper.From(new BitmapHelper(bitmap));
+var color = palette.GetDarkMutedColor(Color.White);
+```
+or
+```c#
 using PaletteNet;
-using PaletteNet.UWP;
+using PaletteNet.WriteableBitmapEx;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI;
 
@@ -21,9 +26,9 @@ public class UWPExample
 }
 ```
 
-Currently supported platforms:
-- UWP 18362
-- Android 9.0
+Supported platforms:
+- UWP >= 10.0.16299
+- Android >= 8.0
 - .Net 4.5
 
 ![alt text](https://github.com/tmk907/PaletteNetStandard/blob/master/images/example1.jpg "Example 1")
