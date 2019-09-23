@@ -58,21 +58,20 @@ namespace PaletteNet
         {
             if (bitmapHelper == null)
             {
-                throw new Exception("IBitmapHelper is not valid");
+                throw new ArgumentNullException("IBitmapHelper is not valid");
             }
 
-            List<Swatch> swatches;
             var pixels = bitmapHelper.ScaleDownAndGetPixels();
             ColorCutQuantizer quantizer = new ColorCutQuantizer(
                     pixels,
                     mMaxColors,
                     (mFilters.Count == 0) ? null : mFilters.ToArray());
 
-            swatches = quantizer.GetQuantizedColors();
+            var swatches = quantizer.GetQuantizedColors();
 
-            Palette p = new Palette(swatches, mTargets);
-            p.Generate();
-            return p;
+            Palette palette = new Palette(swatches, mTargets);
+            palette.Generate();
+            return palette;
         }
 
         /// <summary>

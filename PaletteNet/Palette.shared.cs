@@ -45,6 +45,20 @@ namespace PaletteNet
             mDominantSwatch = FindDominantSwatch();
         }
 
+        public void Generate()
+        {
+            // We need to make sure that the scored targets are generated first. This is so that
+            // inherited targets have something to inherit from
+            for (int i = 0, count = mTargets.Count; i < count; i++)
+            {
+                Target target = mTargets[i];
+                target.NormalizeWeights();
+                mSelectedSwatches.Add(target, GenerateScoredTarget(target));
+            }
+            // We now clear out the used colors
+            mUsedColors.Clear();
+        }
+
         #region Getters
 
         /// <summary>
@@ -223,20 +237,6 @@ namespace PaletteNet
             return mDominantSwatch != null ? mDominantSwatch.GetRgb() : defaultColor;
         }
         #endregion
-
-        public void Generate()
-        {
-            // We need to make sure that the scored targets are generated first. This is so that
-            // inherited targets have something to inherit from
-            for (int i = 0, count = mTargets.Count; i < count; i++)
-            {
-                Target target = mTargets[i];
-                target.NormalizeWeights();
-                mSelectedSwatches.Add(target, GenerateScoredTarget(target));
-            }
-            // We now clear out the used colors
-            mUsedColors.Clear();
-        }
 
         private Swatch GenerateScoredTarget(Target target)
         {

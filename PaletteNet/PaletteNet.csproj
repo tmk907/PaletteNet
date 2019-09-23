@@ -1,8 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.43">
   <PropertyGroup>
-    <TargetFrameworks>MonoAndroid90;uap10.0.18362;net45</TargetFrameworks>
-    
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFrameworks>MonoAndroid80;MonoAndroid81;MonoAndroid90;uap10.0.16299;net45</TargetFrameworks>
+	
 	<PackageOutputPath>$(SolutionDir)/Artifacts</PackageOutputPath>
 	
 	<AssemblyName>PaletteNet</AssemblyName>
@@ -18,6 +17,7 @@
     <PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   
   <ItemGroup>
@@ -38,9 +38,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="**\*.android.cs" />
     <Compile Include="**\*.android.*.cs" />
-    <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.1" />
+	<PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3" /> 
   </ItemGroup>
-
+  
 </Project>

@@ -4,7 +4,7 @@ namespace PaletteNet.Desktop
 {
     public class ColorConverter
     {
-        public static Color IntToColor(int color)
+        public static Color ToColor(int color)
         {
             return Color.FromArgb(
                 (byte)ColorHelpers.Alpha(color),
@@ -13,7 +13,7 @@ namespace PaletteNet.Desktop
                 (byte)ColorHelpers.Blue(color));
         }
 
-        public static int ColorToInt(Color color)
+        public static int ToInt(Color color)
         {
             return ColorHelpers.ARGB(color.A, color.R, color.G, color.B);
         }

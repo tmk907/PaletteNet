@@ -4,7 +4,7 @@ namespace PaletteNet.Android
 {
     public class ColorConverter
     {
-        public static Color IntToColor(int color)
+        public static Color ToColor(int color)
         {
             return Color.Argb(
                 (byte)ColorHelpers.Alpha(color),
@@ -13,7 +13,7 @@ namespace PaletteNet.Android
                 (byte)ColorHelpers.Blue(color));
         }
 
-        public static int ColorToInt(Color color)
+        public static int ToInt(Color color)
         {
             return color.ToArgb();
         }
