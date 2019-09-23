@@ -68,15 +68,14 @@ namespace PaletteNetStandardSample
 
         public void CreatePalette(BitmapDecoder decoder)
         {
-            IBitmapHelper bitmapHelper = new BtimapDecoderHelper(decoder);
-            Palette palette = paletteBuilder.Generate(bitmapHelper);
+            var palette = PaletteHelper.From(new BtimapDecoderHelper(decoder));
 
-            DarkMuted = ColorConverter.IntToColor(palette.GetDarkMutedColorValue());
-            Muted = ColorConverter.IntToColor(palette.GetMutedColorValue());
-            LightMuted = ColorConverter.IntToColor(palette.GetLightMutedColorValue());
-            DarkVibrant = ColorConverter.IntToColor(palette.GetDarkVibrantColorValue());
-            Vibrant = ColorConverter.IntToColor(palette.GetVibrantColorValue());
-            LightVibrant = ColorConverter.IntToColor(palette.GetLightVibrantColorValue());
+            DarkMuted = palette.GetDarkMutedColor(Colors.Black);
+            Muted = palette.GetMutedColor(Colors.Black);
+            LightMuted = palette.GetLightMutedColor(Colors.Black);
+            DarkVibrant = palette.GetDarkVibrantColor(Colors.Black);
+            Vibrant = palette.GetVibrantColor(Colors.Black);
+            LightVibrant = palette.GetLightVibrantColor(Colors.Black);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
