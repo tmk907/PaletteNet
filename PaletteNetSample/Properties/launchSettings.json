@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PaletteNetSample (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "PaletteNetSample (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
