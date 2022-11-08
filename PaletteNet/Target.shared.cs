@@ -197,7 +197,7 @@ namespace PaletteNet
         /// <summary>
         /// Returns the weight of importance that this target places on a color's lightness within
         /// the image.
-        /// <p>The larger the weight, relative to the other weights, the more important that a color
+        /// The larger the weight, relative to the other weights, the more important that a color
         /// being close to the target value has on selection.
         /// </summary>
         /// <returns></returns>
