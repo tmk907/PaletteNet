@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.43">
   <PropertyGroup>
-    <TargetFrameworks>uap10.0.16299</TargetFrameworks>
+	  <TargetFramework>uap10.0.19041</TargetFramework>
 	
 	<PackageOutputPath>$(SolutionDir)/Artifacts</PackageOutputPath>
 	
@@ -35,6 +35,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="WriteableBitmapEx" Version="1.6.2" />
+    <PackageReference Include="WriteableBitmapEx" Version="1.6.8" />
   </ItemGroup>
 </Project>
