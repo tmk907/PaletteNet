@@ -1,6 +1,6 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.43">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>MonoAndroid80;MonoAndroid81;MonoAndroid90;uap10.0.16299;net45</TargetFrameworks>
+    <TargetFrameworks>net6.0;net6.0-android;net6.0-windows10.0.19041.0;netstandard2.0;net48</TargetFrameworks>
 	
 	<PackageOutputPath>$(SolutionDir)/Artifacts</PackageOutputPath>
 	
@@ -17,28 +17,40 @@
     <PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Platforms\**\*.cs" />
+		<None Include="Platforms\**\*.cs" />
+	</ItemGroup>
   
   <ItemGroup>
     <Compile Include="**\*.shared.cs" />
     <Compile Include="**\*.shared.*.cs" />
   </ItemGroup>
   
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net45')) ">
-    <Compile Include="**\*.wpf.cs" />
-    <Compile Include="**\*.wpf.*.cs" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-    <Compile Include="**\*.uwp.cs" />
-    <Compile Include="**\*.uwp.*.cs" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <Compile Include="**\*.android.cs" />
-    <Compile Include="**\*.android.*.cs" />
-	<PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3" /> 
-  </ItemGroup>
+	<!-- Android -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+		<Compile Include="Platforms\Android\*.*.cs" />
+		<PackageReference Include="Xamarin.AndroidX.AppCompat">
+			<Version>1.5.1.1</Version>
+		</PackageReference>
+	</ItemGroup>
+	
+	<!-- Windows -->
+	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+		<Compile Include="Platforms\Windows\*.*.cs" />
+	</ItemGroup>
+
+	<!-- WPF -->
+	<ItemGroup Condition="$(TargetFramework) == 'net48'">
+		<Compile Include="Platforms\WPF\*.*.cs" />
+	</ItemGroup>
+
+	<!-- UWP -->
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+		<Compile Include="Platforms\UWP\*.*.cs" />
+	</ItemGroup>
   
 </Project>
