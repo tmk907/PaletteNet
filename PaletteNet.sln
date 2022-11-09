@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaletteNetSample", "Palette
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaletteNet.WriteableBitmap", "PaletteNet.WriteableBitmap\PaletteNet.WriteableBitmap.csproj", "{3AF845B1-5E5A-426A-BC34-D065AC20EBB5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaletteNet.UWP", "PaletteNet.UWP\PaletteNet.UWP.csproj", "{F1E28089-31D7-47BB-8886-A5C3E49D2614}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,26 @@ Global
 		{3AF845B1-5E5A-426A-BC34-D065AC20EBB5}.Release|x64.Build.0 = Release|Any CPU
 		{3AF845B1-5E5A-426A-BC34-D065AC20EBB5}.Release|x86.ActiveCfg = Release|Any CPU
 		{3AF845B1-5E5A-426A-BC34-D065AC20EBB5}.Release|x86.Build.0 = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|arm64.Build.0 = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|x64.Build.0 = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Debug|x86.Build.0 = Debug|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|ARM.Build.0 = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|arm64.ActiveCfg = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|arm64.Build.0 = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|x64.ActiveCfg = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|x64.Build.0 = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|x86.ActiveCfg = Release|Any CPU
+		{F1E28089-31D7-47BB-8886-A5C3E49D2614}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
