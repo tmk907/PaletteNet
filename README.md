@@ -1,35 +1,54 @@
 # PaletteNet
+Library to extract prominent colors from an image. 
+- Dominant
+- Vibrant
+- Vibrant Dark
+- Vibrant Light
+- Muted
+- Muted Dark
+- Muted Light  
+
 .NET port of Android's Palette https://developer.android.com/reference/android/support/v7/graphics/Palette.html
 
-## Example
+
+## Install
+
+[![Nuget](https://img.shields.io/nuget/v/PaletteNet)](https://www.nuget.org/packages/PaletteNet) [https://www.nuget.org/packages/PaletteNet](https://www.nuget.org/packages/PaletteNet)
+
+Target frameworks:
+- net6.0
+- net6.0-android
+- net6.0-windows10.0.19041.0
+- netstandard2.0
+- net48
+
+## Example (WinUI3)
 ```c#
-var palette = PaletteHelper.From(new BitmapHelper(bitmap));
-var color = palette.GetDarkMutedColor(Color.White);
+using IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read);
+BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
+
+var palette = PaletteColors.Generate(new BitmapDecoderHelper(decoder));
+var dominantColor = palette.GetDominantColor();
+var allColors = palette.GetAllColors();
 ```
 or
 ```c#
-using PaletteNet;
-using PaletteNet.WriteableBitmapEx;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI;
-
-public class UWPExample
-{
-    public Color GetDarkMutedColor(WriteableBitmap bitmap)
-    {
-        IBitmapHelper bitmapHelper = new WriteableBitmapHelper(bitmap);
-        PaletteBuilder paletteBuilder = new PaletteBuilder();
-        Palette palette = paletteBuilder.Generate(bitmapHelper);
-        Color color = ColorConverter.IntToColor(palette.GetDarkMutedColorvalue());
-        return color;
-    }
-}
+IBitmapHelper bitmapHelper = new BitmapDecoderHelper(decoder);
+PaletteBuilder paletteBuilder = new PaletteBuilder();
+Palette palette = paletteBuilder.Generate(bitmapHelper);
+var color = palette.GetMutedColor().ToColor();
+var textColor = palette.GetDominantSwatch().getTitleTextColor();
 ```
 
-Supported platforms:
-- UWP >= 10.0.16299
-- Android >= 8.0
-- .Net 4.5
+![alt text](https://github.com/tmk907/PaletteNet/blob/master/images/example1.jpg "Example 1")
+![alt text](https://github.com/tmk907/PaletteNet/blob/master/images/example1.jpg "Example 2")
 
-![alt text](https://github.com/tmk907/PaletteNetStandard/blob/master/images/example1.jpg "Example 1")
-![alt text](https://github.com/tmk907/PaletteNetStandard/blob/master/images/example2.jpg "Example 2")
+## Sample app
+
+Download app from Microsoft Store
+
+<a href='https://www.microsoft.com/en-us/p/palettenet-sample-app/9MTQD4S7C86H?cid=badgegithub'>
+<img width='240' height='96'  src='https://get.microsoft.com/images/en-us%20dark.svg' 
+alt='English badge'/></a>
+
+[Color palette icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/color-palette)
