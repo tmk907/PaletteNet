@@ -40,8 +40,8 @@ var color = palette.GetMutedColor().ToColor();
 var textColor = palette.GetDominantSwatch().getTitleTextColor();
 ```
 
-![alt text](https://github.com/tmk907/PaletteNet/blob/master/images/example1.jpg "Example 1")
-![alt text](https://github.com/tmk907/PaletteNet/blob/master/images/example1.jpg "Example 2")
+![screenshot 1](https://github.com/tmk907/PaletteNet/blob/master/images/example1.jpg "Example 1")
+![screenshot 2](https://github.com/tmk907/PaletteNet/blob/master/images/example1.jpg "Example 2")
 
 ## Sample app
 
