@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
         <Rectangle
             Grid.Column="0"
-            Width="300"
+            Width="150"
             Height="60"
             Fill="{x:Bind Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}" />
         <StackPanel
@@ -29,7 +29,7 @@
                     Width="88"
                     VerticalAlignment="Center"
                     Text="{x:Bind ColorHex, Mode=OneWay}" />
-                <Button Command="{x:Bind CopyHexCommand}">
+                <Button Command="{x:Bind CopyHexCommand}" ToolTipService.ToolTip="Copy HEX">
                     <Button.Content>
                         <SymbolIcon Symbol="Copy" />
                     </Button.Content>
@@ -40,7 +40,7 @@
                     Width="88"
                     VerticalAlignment="Center"
                     Text="{x:Bind ColorRGB, Mode=OneWay}" />
-                <Button Command="{x:Bind CopyRGBCommand}">
+                <Button Command="{x:Bind CopyRGBCommand}" ToolTipService.ToolTip="Copy RGB">
                     <Button.Content>
                         <SymbolIcon Symbol="Copy" />
                     </Button.Content>

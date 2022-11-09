@@ -11,6 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" VerticalAlignment="Center">
             <Grid.RowDefinitions>
@@ -42,8 +43,24 @@
         </Grid>
         <ListView
             Grid.Column="1"
+            Header="Palette"
             IsItemClickEnabled="False"
             ItemsSource="{x:Bind VM.PaletteColors}"
+            SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:ColorItem">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{x:Bind Description}" />
+                        <local:ColorControl Color="{x:Bind Color}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView
+            Grid.Column="2"
+            Header="All colors"
+            IsItemClickEnabled="False"
+            ItemsSource="{x:Bind VM.AllColors}"
             SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:ColorItem">

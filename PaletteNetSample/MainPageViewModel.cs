@@ -15,78 +15,30 @@ namespace PaletteNetSample
         {
         }
 
-        private Color dominant;
-        public Color Dominant
-        {
-            get { return dominant; }
-            set { Set(ref dominant, value); }
-        }
-
-        private Color darkMuted;
-        public Color DarkMuted
-        {
-            get { return darkMuted; }
-            set { Set(ref darkMuted, value); }
-        }
-
-        private Color muted;
-        public Color Muted
-        {
-            get { return muted; }
-            set { Set(ref muted, value); }
-        }
-
-        private Color lightMuted;
-        public Color LightMuted
-        {
-            get { return lightMuted; }
-            set { Set(ref lightMuted, value); }
-        }
-
-        private Color darkVibrant;
-        public Color DarkVibrant
-        {
-            get { return darkVibrant; }
-            set { Set(ref darkVibrant, value); }
-        }
-
-        private Color vibrant;
-        public Color Vibrant
-        {
-            get { return vibrant; }
-            set { Set(ref vibrant, value); }
-        }
-
-        private Color lightVibrant;
-        public Color LightVibrant
-        {
-            get { return lightVibrant; }
-            set { Set(ref lightVibrant, value); }
-        }
-
         public ObservableCollection<ColorItem> PaletteColors { get; } = new ObservableCollection<ColorItem>();
+        public ObservableCollection<ColorItem> AllColors { get; } = new ObservableCollection<ColorItem>();
+
+
 
         public void CreatePalette(BitmapDecoder decoder)
         {
             PaletteColors.Clear();
+            AllColors.Clear();
 
-            var palette = PaletteHelper.From(new BitmapDecoderHelper(decoder));
+            var palette = PaletteNet.Windows.PaletteColors.Generate(new BitmapDecoderHelper(decoder));
 
-            DarkMuted = palette.GetDarkMutedColor(Colors.Transparent);
-            Muted = palette.GetMutedColor(Colors.Transparent);
-            LightMuted = palette.GetLightMutedColor(Colors.Transparent);
-            DarkVibrant = palette.GetDarkVibrantColor(Colors.Transparent);
-            Vibrant = palette.GetVibrantColor(Colors.Transparent);
-            LightVibrant = palette.GetLightVibrantColor(Colors.Transparent);
-            Dominant = palette.GetDominantColor(Colors.Transparent);
+            PaletteColors.Add(new ColorItem { Color = palette.GetDominantColor(), Description = "Dominant" });
+            PaletteColors.Add(new ColorItem { Color = palette.GetLightVibrantColor(), Description = "Light Vibrant" });
+            PaletteColors.Add(new ColorItem { Color = palette.GetVibrantColor(), Description = "Vibrant" });
+            PaletteColors.Add(new ColorItem { Color = palette.GetDarkVibrantColor(), Description = "Dark Vibrant" });
+            PaletteColors.Add(new ColorItem { Color = palette.GetLightMutedColor(), Description = "Light Muted" });
+            PaletteColors.Add(new ColorItem { Color = palette.GetMutedColor(), Description = "Muted" });
+            PaletteColors.Add(new ColorItem { Color = palette.GetDarkMutedColor(), Description = "Dark Muted" });
 
-            PaletteColors.Add(new ColorItem { Color = Dominant, Description = "Dominant" });
-            PaletteColors.Add(new ColorItem { Color = LightVibrant, Description = "Light Vibrant" });
-            PaletteColors.Add(new ColorItem { Color = Vibrant, Description = "Vibrant" });
-            PaletteColors.Add(new ColorItem { Color = DarkVibrant, Description = "Dark Vibrant" });
-            PaletteColors.Add(new ColorItem { Color = LightMuted, Description = "Light Muted" });
-            PaletteColors.Add(new ColorItem { Color = Muted, Description = "Muted" });
-            PaletteColors.Add(new ColorItem { Color = DarkMuted, Description = "Dark Muted" });
+            foreach(var c in palette.GetAllColors())
+            {
+                AllColors.Add(new ColorItem { Color = c});
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
