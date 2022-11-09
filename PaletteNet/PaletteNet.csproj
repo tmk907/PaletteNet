@@ -2,33 +2,65 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net6.0-android;net6.0-windows10.0.19041.0;netstandard2.0;net48</TargetFrameworks>
 	
-	<PackageOutputPath>$(SolutionDir)/Artifacts</PackageOutputPath>
-	
-	<AssemblyName>PaletteNet</AssemblyName>
-    <RootNamespace>PaletteNet</RootNamespace>
-	
 	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-	
-    <Authors>Tomasz Walecki</Authors>
-    <PackageId>PaletteNet</PackageId>
-    <Product>PaletteNet</Product>
-    <Description>.NET port of Android's Palette</Description>
-    <PackageTags>palette image color</PackageTags>
-    <PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>2.0.0</Version>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>PaletteNet</PackageId>
+		<Product>PaletteNet</Product>
+		<Version>2.0.0</Version>
+		<PackageOutputPath>$(SolutionDir)nupkg</PackageOutputPath>
+		<Title>PaletteNet</Title>
+		<Authors>Tomasz Walecki</Authors>
+		<RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>palette;image;color</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Description>.NET port of Android's Palette. Extract prominent colors from an image.</Description>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReleaseNotes>Target .Net 6</PackageReleaseNotes>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<!-- If all members are not documented, you can disable the compiler warnings -->
+		<NoWarn>$(NoWarn);CS1591</NoWarn>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<Target Name="NugetAdd" AfterTargets="Pack">
+		<exec command="nuget add $(SolutionDir)nupkg\$(PackageId).$(PackageVersion).nupkg -source C:\Source\NugetRepo" />
+	</Target>
+
+	<ItemGroup>
+		<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\images\icon.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Remove="Platforms\**\*.cs" />
 		<None Include="Platforms\**\*.cs" />
 	</ItemGroup>
   
-  <ItemGroup>
-    <Compile Include="**\*.shared.cs" />
-    <Compile Include="**\*.shared.*.cs" />
-  </ItemGroup>
+	<ItemGroup>
+	<Compile Include="**\*.shared.cs" />
+	<Compile Include="**\*.shared.*.cs" />
+	</ItemGroup>
   
 	<!-- Android -->
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
@@ -47,18 +79,5 @@
 	<ItemGroup Condition="$(TargetFramework) == 'net48'">
 		<Compile Include="Platforms\WPF\*.*.cs" />
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
 
-	<PropertyGroup>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-
-		<!-- If all members are not documented, you can disable the compiler warnings -->
-		<NoWarn>$(NoWarn);CS1591</NoWarn>
-	</PropertyGroup>
 </Project>
