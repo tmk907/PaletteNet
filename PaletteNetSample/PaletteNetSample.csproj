@@ -10,6 +10,15 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>$(SolutionDir)\PaletteNetSample\AppPackages\</AppxPackageDir>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>False</GenerateTestArtifacts>
+    <AppxBundle>Always</AppxBundle>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <AppxBundlePlatforms>x86|x64|arm64</AppxBundlePlatforms>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="ColorControl.xaml" />

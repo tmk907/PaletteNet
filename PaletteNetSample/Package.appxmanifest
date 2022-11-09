@@ -4,16 +4,18 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  IgnorableNamespaces="uap rescap com desktop">
 
   <Identity
-    Name="19535861-842a-4af9-be5f-1753c1192a41"
-    Publisher="CN=tomek"
+    Name="60490polApki.PaletteNetSampleApp"
+    Publisher="CN=EFEE17C1-DC2A-4553-8CE6-82B55CBC72FE"
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>PaletteNetSample</DisplayName>
-    <PublisherDisplayName>tomek</PublisherDisplayName>
+    <DisplayName>PaletteNet Sample App</DisplayName>
+    <PublisherDisplayName>DryForest</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -45,4 +47,5 @@
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
+
 </Package>
