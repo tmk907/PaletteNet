@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using PaletteNet.Windows;
 using Windows.Graphics.Imaging;
-using Microsoft.UI;
 using Windows.UI;
 using System.Collections.ObjectModel;
 
@@ -11,14 +10,8 @@ namespace PaletteNetSample
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        public MainPageViewModel()
-        {
-        }
-
         public ObservableCollection<ColorItem> PaletteColors { get; } = new ObservableCollection<ColorItem>();
         public ObservableCollection<ColorItem> AllColors { get; } = new ObservableCollection<ColorItem>();
-
-
 
         public void CreatePalette(BitmapDecoder decoder)
         {

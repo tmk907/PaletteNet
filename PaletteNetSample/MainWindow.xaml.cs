@@ -13,6 +13,7 @@ namespace PaletteNetSample
         public MainWindow()
         {
             this.InitializeComponent();
+            Title = "PaletteNet Sample App";
             Hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
             rootFrame.Navigate(typeof(MainPage));
         }
