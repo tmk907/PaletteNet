@@ -1,59 +1,79 @@
-﻿using Windows.UI;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Windows.UI;
 
 namespace PaletteNet.Windows
 {
-    public class PaletteHelper
+    public class PaletteColors
     {
-        public static PaletteColors From(IBitmapHelper bitmapHelper)
+        private readonly Palette _palette;
+        private readonly int _defaultColor;
+
+        public static PaletteColors Generate(IBitmapHelper bitmapHelper)
         {
             var paletteBuilder = new PaletteBuilder();
             var palette = paletteBuilder.Generate(bitmapHelper);
             return new PaletteColors(palette);
         }
-    }
 
-    public class PaletteColors
-    {
-        private readonly Palette _palette;
+        public static PaletteColors Generate(IBitmapHelper bitmapHelper, Color defaultColor)
+        {
+            var paletteBuilder = new PaletteBuilder();
+            var palette = paletteBuilder.Generate(bitmapHelper);
+            return new PaletteColors(palette, defaultColor);
+        }
 
         public PaletteColors(Palette palette)
         {
             _palette = palette;
+            _defaultColor = 0;
         }
 
-        public Color GetVibrantColor(Color defaultColor)
+        public PaletteColors(Palette palette, Color defaultColor)
         {
-            return ColorConverter.ToColor(_palette.GetVibrantColorValue(ColorConverter.ToInt(defaultColor)));
+            _palette = palette;
+            _defaultColor = defaultColor.ToInt();
         }
 
-        public Color GetLightVibrantColor(Color defaultColor)
+        public Color GetDominantColor()
         {
-            return ColorConverter.ToColor(_palette.GetLightVibrantColorValue(ColorConverter.ToInt(defaultColor)));
+            return _palette.GetDominantColorValue(_defaultColor).ToColor();
         }
 
-        public Color GetDarkVibrantColor(Color defaultColor)
+        public Color GetVibrantColor()
         {
-            return ColorConverter.ToColor(_palette.GetDarkVibrantColorValue(ColorConverter.ToInt(defaultColor)));
+            return _palette.GetVibrantColorValue(_defaultColor).ToColor();
         }
 
-        public Color GetMutedColor(Color defaultColor)
+        public Color GetLightVibrantColor()
         {
-            return ColorConverter.ToColor(_palette.GetMutedColorValue(ColorConverter.ToInt(defaultColor)));
+            return _palette.GetLightVibrantColorValue(_defaultColor).ToColor();
         }
 
-        public Color GetLightMutedColor(Color defaultColor)
+        public Color GetDarkVibrantColor()
         {
-            return ColorConverter.ToColor(_palette.GetLightMutedColorValue(ColorConverter.ToInt(defaultColor)));
+            return _palette.GetDarkVibrantColorValue(_defaultColor).ToColor();
         }
 
-        public Color GetDarkMutedColor(Color defaultColor)
+        public Color GetMutedColor()
         {
-            return ColorConverter.ToColor(_palette.GetDarkMutedColorValue(ColorConverter.ToInt(defaultColor)));
+            return _palette.GetMutedColorValue(_defaultColor).ToColor();
         }
 
-        public Color GetDominantColor(Color defaultColor)
+        public Color GetLightMutedColor()
         {
-            return ColorConverter.ToColor(_palette.GetDominantColorValue(ColorConverter.ToInt(defaultColor)));
+            return _palette.GetLightMutedColorValue(_defaultColor).ToColor();
+        }
+
+        public Color GetDarkMutedColor()
+        {
+            return _palette.GetDarkMutedColorValue(_defaultColor).ToColor();
+        }
+
+        public IEnumerable<Color> GetAllColors()
+        {
+            return _palette.GetSwatches().Select(x => x.GetRgb().ToColor());
         }
     }
 }

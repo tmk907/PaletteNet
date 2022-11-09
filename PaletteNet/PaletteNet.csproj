@@ -17,7 +17,7 @@
     <PackageProjectUrl>https://github.com/tmk907/PaletteNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tmk907/PaletteNet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -46,11 +46,6 @@
 	<!-- WPF -->
 	<ItemGroup Condition="$(TargetFramework) == 'net48'">
 		<Compile Include="Platforms\WPF\*.*.cs" />
-	</ItemGroup>
-
-	<!-- UWP -->
-	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-		<Compile Include="Platforms\UWP\*.*.cs" />
 	</ItemGroup>
 	
 	<ItemGroup>
