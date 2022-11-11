@@ -27,17 +27,17 @@ Target frameworks:
 using IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read);
 BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
 
-var palette = PaletteColors.Generate(new BitmapDecoderHelper(decoder));
-var dominantColor = palette.GetDominantColor();
-var allColors = palette.GetAllColors();
+PaletteColors palette = PaletteColors.Generate(new BitmapDecoderHelper(decoder));
+Color dominantColor = palette.DominantColor;
+IEnumerable<Color> allColors = palette.GetAllColors();
 ```
 or
 ```c#
 IBitmapHelper bitmapHelper = new BitmapDecoderHelper(decoder);
 PaletteBuilder paletteBuilder = new PaletteBuilder();
 Palette palette = paletteBuilder.Generate(bitmapHelper);
-var color = palette.GetMutedColor().ToColor();
-var textColor = palette.GetDominantSwatch().getTitleTextColor();
+int? rgbColor = palette.MutedColor;
+int? rgbTextColor = palette.DominantSwatch.TitleTextColor;
 ```
 
 ![screenshot 1](https://github.com/tmk907/PaletteNet/blob/master/images/example1.png "Example 1")
