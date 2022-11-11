@@ -31,23 +31,23 @@ namespace PaletteNet
 
         static readonly int DEFAULT_CALCULATE_NUMBER_COLORS = 16;
 
-        private readonly List<Target> mTargets = new List<Target>();
+        private readonly List<Target> _targets = new List<Target>();
 
-        private int mMaxColors = DEFAULT_CALCULATE_NUMBER_COLORS;
+        private int _maxColors = DEFAULT_CALCULATE_NUMBER_COLORS;
 
-        private readonly List<IFilter> mFilters = new List<IFilter>();
+        private readonly List<IFilter> _filters = new List<IFilter>();
 
         public PaletteBuilder()
         {
-            mFilters.Add(DEFAULT_FILTER);
+            _filters.Add(DEFAULT_FILTER);
 
             // Add the default targets
-            mTargets.Add(Target.LIGHT_VIBRANT);
-            mTargets.Add(Target.VIBRANT);
-            mTargets.Add(Target.DARK_VIBRANT);
-            mTargets.Add(Target.LIGHT_MUTED);
-            mTargets.Add(Target.MUTED);
-            mTargets.Add(Target.DARK_MUTED);
+            _targets.Add(Target.LIGHT_VIBRANT);
+            _targets.Add(Target.VIBRANT);
+            _targets.Add(Target.DARK_VIBRANT);
+            _targets.Add(Target.LIGHT_MUTED);
+            _targets.Add(Target.MUTED);
+            _targets.Add(Target.DARK_MUTED);
         }
 
         /// <summary>
@@ -58,18 +58,18 @@ namespace PaletteNet
         {
             if (bitmapHelper == null)
             {
-                throw new ArgumentNullException("IBitmapHelper is not valid");
+                throw new ArgumentNullException(nameof(bitmapHelper));
             }
 
             var pixels = bitmapHelper.ScaleDownAndGetPixels();
             ColorCutQuantizer quantizer = new ColorCutQuantizer(
                     pixels,
-                    mMaxColors,
-                    (mFilters.Count == 0) ? null : mFilters.ToArray());
+                    _maxColors,
+                    (_filters.Count == 0) ? null : _filters.ToArray());
 
             var swatches = quantizer.GetQuantizedColors();
 
-            Palette palette = new Palette(swatches, mTargets);
+            Palette palette = new Palette(swatches, _targets);
             palette.Generate();
             return palette;
         }
@@ -85,7 +85,7 @@ namespace PaletteNet
         /// <returns></returns>
         public PaletteBuilder MaximumColorCount(int colors)
         {
-            mMaxColors = colors;
+            _maxColors = colors;
             return this;
         }
         
@@ -95,11 +95,11 @@ namespace PaletteNet
         /// </summary>
         /// <param name="filter">filter filter to add.</param>
         /// <returns></returns>
-        public PaletteBuilder AddFilter(IFilter filter)
+        public PaletteBuilder AddFilter(IFilter? filter)
         {
             if (filter != null)
             {
-                mFilters.Add(filter);
+                _filters.Add(filter);
             }
             return this;
         }
@@ -110,7 +110,7 @@ namespace PaletteNet
         /// <returns></returns>
         public PaletteBuilder ClearFilters()
         {
-            mFilters.Clear();
+            _filters.Clear();
             return this;
         }
 
@@ -122,9 +122,9 @@ namespace PaletteNet
         /// <returns></returns>
         public PaletteBuilder AddTarget(Target target)
         {
-            if (!mTargets.Contains(target))
+            if (!_targets.Contains(target))
             {
-                mTargets.Add(target);
+                _targets.Add(target);
             }
             return this;
         }
@@ -135,9 +135,9 @@ namespace PaletteNet
         /// <returns></returns>
         public PaletteBuilder ClearTargets()
         {
-            if (mTargets != null)
+            if (_targets != null)
             {
-                mTargets.Clear();
+                _targets.Clear();
             }
             return this;
         }

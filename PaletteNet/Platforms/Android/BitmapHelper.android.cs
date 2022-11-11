@@ -18,16 +18,18 @@ namespace PaletteNet.Android
 
         public int[] ScaleDownAndGetPixels()
         {
-            ScaleBitmapDown(bitmap);
-            int bitmapWidth = bitmap.Width;
-            int bitmapHeight = bitmap.Height;
+            using var scaledBitmap = ScaleBitmapDown(bitmap);
+            if (scaledBitmap == null) return new int[0];
+
+            int bitmapWidth = scaledBitmap.Width;
+            int bitmapHeight = scaledBitmap.Height;
             int[] pixels = new int[bitmapWidth * bitmapHeight];
-            bitmap.GetPixels(pixels, 0, bitmapWidth, 0, 0, bitmapWidth, bitmapHeight);
+            scaledBitmap.GetPixels(pixels, 0, bitmapWidth, 0, 0, bitmapWidth, bitmapHeight);
 
             return pixels;
         }
 
-        private void ScaleBitmapDown(Bitmap bitmap)
+        private Bitmap? ScaleBitmapDown(Bitmap bitmap)
         {
             double scaleRatio = -1;
 
@@ -51,10 +53,10 @@ namespace PaletteNet.Android
             if (scaleRatio <= 0)
             {
                 // Scaling has been disabled or not needed so just return the Bitmap
-                return;
+                return null;
             }
 
-            bitmap = Bitmap.CreateScaledBitmap(bitmap,
+            return Bitmap.CreateScaledBitmap(bitmap,
                     (int)Math.Ceiling(bitmap.Width * scaleRatio),
                     (int)Math.Ceiling(bitmap.Width * scaleRatio),
                     false);

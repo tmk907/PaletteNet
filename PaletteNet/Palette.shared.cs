@@ -21,42 +21,37 @@ namespace PaletteNet
 {
     public class Palette
     {
-        private readonly List<Swatch> mSwatches;
-        private readonly List<Target> mTargets;
+        private readonly List<Swatch> _swatches;
+        private readonly List<Target> _targets;
 
-        private readonly Dictionary<Target, Swatch> mSelectedSwatches;
-        private readonly Dictionary<int, bool> mUsedColors;
+        private readonly Dictionary<Target, Swatch?> _SelectedSwatches;
+        private readonly Dictionary<int, bool> _usedColors;
 
-        private readonly Swatch mDominantSwatch;
+        private readonly Swatch? _dominantSwatch;
 
-        /// <summary>
-        /// White
-        /// </summary>
-        const int DefaultColorValue = -1;
-       
         public Palette(List<Swatch> swatches, List<Target> targets)
         {
-            mSwatches = swatches;
-            mTargets = targets;
+            _swatches = swatches;
+            _targets = targets;
 
-            mUsedColors = new Dictionary<int, bool>();
-            mSelectedSwatches = new Dictionary<Target, Swatch>();
+            _usedColors = new Dictionary<int, bool>();
+            _SelectedSwatches = new Dictionary<Target, Swatch?>();
 
-            mDominantSwatch = FindDominantSwatch();
+            _dominantSwatch = FindDominantSwatch();
         }
 
         public void Generate()
         {
             // We need to make sure that the scored targets are generated first. This is so that
             // inherited targets have something to inherit from
-            for (int i = 0, count = mTargets.Count; i < count; i++)
+            for (int i = 0, count = _targets.Count; i < count; i++)
             {
-                Target target = mTargets[i];
+                Target target = _targets[i];
                 target.NormalizeWeights();
-                mSelectedSwatches.Add(target, GenerateScoredTarget(target));
+                _SelectedSwatches.Add(target, GenerateScoredTarget(target));
             }
             // We now clear out the used colors
-            mUsedColors.Clear();
+            _usedColors.Clear();
         }
 
         #region Getters
@@ -65,133 +60,85 @@ namespace PaletteNet
         /// Returns all of the swatches which make up the palette.
         /// </summary>
         /// <returns></returns>
-        public List<Swatch> GetSwatches()
-        {
-            return new List<Swatch>(mSwatches);
-        }
+        public List<Swatch> Swatches => new List<Swatch>(_swatches);
 
         /// <summary>
         /// Returns the targets used to generate this palette.
         /// </summary>
         /// <returns></returns>
-        public List<Target> GetTargets()
-        {
-            return new List<Target>(mTargets);
-        }
+        public List<Target> Targets => new List<Target>(_targets);
 
         /// <summary>
         /// Returns the most vibrant swatch in the palette. Might be null.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetVibrantSwatch()
-        {
-            return GetSwatchForTarget(Target.VIBRANT);
-        }
+        public Swatch? VibrantSwatch => GetSwatchForTarget(Target.VIBRANT);
 
         /// <summary>
         /// Returns a light and vibrant swatch from the palette. Might be null.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetLightVibrantSwatch()
-        {
-            return GetSwatchForTarget(Target.LIGHT_VIBRANT);
-        }
+        public Swatch? LightVibrantSwatch => GetSwatchForTarget(Target.LIGHT_VIBRANT);
 
         /// <summary>
         /// Returns a dark and vibrant swatch from the palette. Might be null.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetDarkVibrantSwatch()
-        {
-            return GetSwatchForTarget(Target.DARK_VIBRANT);
-        }
+        public Swatch? DarkVibrantSwatch => GetSwatchForTarget(Target.DARK_VIBRANT);
 
         /// <summary>
         /// Returns a muted swatch from the palette. Might be null.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetMutedSwatch()
-        {
-            return GetSwatchForTarget(Target.MUTED);
-        }
+        public Swatch? MutedSwatch => GetSwatchForTarget(Target.MUTED);
 
         /// <summary>
         /// Returns a muted and light swatch from the palette. Might be null.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetLightMutedSwatch()
-        {
-            return GetSwatchForTarget(Target.LIGHT_MUTED);
-        }
+        public Swatch? LightMutedSwatch => GetSwatchForTarget(Target.LIGHT_MUTED);
 
         /// <summary>
         /// Returns a muted and dark swatch from the palette. Might be null.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetDarkMutedSwatch()
-        {
-            return GetSwatchForTarget(Target.DARK_MUTED);
-        }
+        public Swatch? DarkMutedSwatch => GetSwatchForTarget(Target.DARK_MUTED);
 
         /// <summary>
         /// Returns the most vibrant color in the palette as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetVibrantColorValue(int defaultColor = DefaultColorValue)
-        {
-            return GetColorForTarget(Target.VIBRANT, defaultColor);
-        }
+        public int? VibrantColor => GetColorForTarget(Target.VIBRANT);
 
         /// <summary>
         /// Returns a light and vibrant color from the palette as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetLightVibrantColorValue(int defaultColor = DefaultColorValue)
-        {
-            return GetColorForTarget(Target.LIGHT_VIBRANT, defaultColor);
-        }
+        public int? LightVibrantColor => GetColorForTarget(Target.LIGHT_VIBRANT);
 
         /// <summary>
         /// Returns a dark and vibrant color from the palette as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetDarkVibrantColorValue(int defaultColor = DefaultColorValue)
-        {
-            return GetColorForTarget(Target.DARK_VIBRANT, defaultColor);
-        }
+        public int? DarkVibrantColor => GetColorForTarget(Target.DARK_VIBRANT);
 
         /// <summary>
         /// Returns a muted color from the palette as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetMutedColorValue(int defaultColor = DefaultColorValue)
-        {
-            return GetColorForTarget(Target.MUTED, defaultColor);
-        }
+        public int? MutedColor => GetColorForTarget(Target.MUTED);
 
         /// <summary>
         /// Returns a muted and light color from the palette as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetLightMutedColorValue(int defaultColor = DefaultColorValue)
-        {
-            return GetColorForTarget(Target.LIGHT_MUTED, defaultColor);
-        }
+        public int? LightMutedColor => GetColorForTarget(Target.LIGHT_MUTED);
 
         /// <summary>
         /// Returns a muted and dark color from the palette as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetDarkMutedColorValue(int defaultColor = DefaultColorValue)
-        {
-            return GetColorForTarget(Target.DARK_MUTED, defaultColor);
-        }
+        public int? DarkMutedColor => GetColorForTarget(Target.DARK_MUTED);
 
         /// <summary>
         /// Returns the selected swatch for the given target from the palette, or null if one
@@ -199,21 +146,20 @@ namespace PaletteNet
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public Swatch GetSwatchForTarget(Target target)
+        public Swatch? GetSwatchForTarget(Target target)
         {
-            return mSelectedSwatches[target];
+            return _SelectedSwatches[target];
         }
 
         /// <summary>
         /// Returns the selected color for the given target from the palette as an RGB packed int.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="defaultColor"></param>
         /// <returns></returns>
-        public int GetColorForTarget(Target target, int defaultColor = DefaultColorValue)
+        public int? GetColorForTarget(Target target)
         {
-            Swatch swatch = GetSwatchForTarget(target);
-            return swatch != null ? swatch.GetRgb() : defaultColor;
+            var swatch = GetSwatchForTarget(target);
+            return swatch?.Rgb;
         }
 
         /// <summary>
@@ -222,40 +168,33 @@ namespace PaletteNet
         /// within the palette.
         /// </summary>
         /// <returns></returns>
-        public Swatch GetDominantSwatch()
-        {
-            return mDominantSwatch;
-        }
+        public Swatch? DominantSwatch => _dominantSwatch;
 
         /// <summary>
         /// Returns the color of the dominant swatch from the palette, as an RGB packed int.
         /// </summary>
-        /// <param name="defaultColor">value to return if the swatch isn't available</param>
         /// <returns></returns>
-        public int GetDominantColorValue(int defaultColor = DefaultColorValue)
-        {
-            return mDominantSwatch != null ? mDominantSwatch.GetRgb() : defaultColor;
-        }
+        public int? DominantColor => _dominantSwatch?.Rgb;
         #endregion
 
-        private Swatch GenerateScoredTarget(Target target)
+        private Swatch? GenerateScoredTarget(Target target)
         {
-            Swatch maxScoreSwatch = GetMaxScoredSwatchForTarget(target);
+            Swatch? maxScoreSwatch = GetMaxScoredSwatchForTarget(target);
             if (maxScoreSwatch != null && target.IsExclusive())
             {
                 // If we have a swatch, and the target is exclusive, add the color to the used list
-                mUsedColors.Add(maxScoreSwatch.GetRgb(), true);
+                _usedColors.Add(maxScoreSwatch.Rgb, true);
             }
             return maxScoreSwatch;
         }
 
-        private Swatch GetMaxScoredSwatchForTarget(Target target)
+        private Swatch? GetMaxScoredSwatchForTarget(Target target)
         {
             float maxScore = 0;
-            Swatch maxScoreSwatch = null;
-            for (int i = 0, count = mSwatches.Count; i < count; i++)
+            Swatch? maxScoreSwatch = null;
+            for (int i = 0, count = _swatches.Count; i < count; i++)
             {
-                Swatch swatch = mSwatches[i];
+                Swatch swatch = _swatches[i];
                 if (ShouldBeScoredForTarget(swatch, target))
                 {
                     float score = GenerateScore(swatch, target);
@@ -275,9 +214,9 @@ namespace PaletteNet
             // been used yet.
             float[] hsl = swatch.GetHsl();
             bool a = false;
-            mUsedColors.TryGetValue(swatch.GetRgb(), out a);
-            return hsl[1] >= target.GetMinimumSaturation() && hsl[1] <= target.GetMaximumSaturation()
-                    && hsl[2] >= target.GetMinimumLightness() && hsl[2] <= target.GetMaximumLightness()
+            _usedColors.TryGetValue(swatch.Rgb, out a);
+            return hsl[1] >= target.MinimumSaturation && hsl[1] <= target.MaximumSaturation
+                    && hsl[2] >= target.MinimumLightness && hsl[2] <= target.MaximumLightness
                     && !a;
         }
 
@@ -289,38 +228,38 @@ namespace PaletteNet
             float luminanceScore = 0;
             float populationScore = 0;
 
-            int maxPopulation = mDominantSwatch != null ? mDominantSwatch.GetPopulation() : 1;
+            int maxPopulation = _dominantSwatch != null ? _dominantSwatch.Population : 1;
 
-            if (target.GetSaturationWeight() > 0)
+            if (target.SaturationWeight > 0)
             {
-                saturationScore = target.GetSaturationWeight()
-                        * (1f - Math.Abs(hsl[1] - target.GetTargetSaturation()));
+                saturationScore = target.SaturationWeight
+                        * (1f - Math.Abs(hsl[1] - target.TargetSaturation));
             }
-            if (target.GetLightnessWeight() > 0)
+            if (target.LightnessWeight > 0)
             {
-                luminanceScore = target.GetLightnessWeight()
-                        * (1f - Math.Abs(hsl[2] - target.GetTargetLightness()));
+                luminanceScore = target.LightnessWeight
+                        * (1f - Math.Abs(hsl[2] - target.TargetLightness));
             }
-            if (target.GetPopulationWeight() > 0)
+            if (target.PopulationWeight > 0)
             {
-                populationScore = target.GetPopulationWeight()
-                        * (swatch.GetPopulation() / (float)maxPopulation);
+                populationScore = target.PopulationWeight
+                        * (swatch.Population / (float)maxPopulation);
             }
 
             return saturationScore + luminanceScore + populationScore;
         }
 
-        private Swatch FindDominantSwatch()
+        private Swatch? FindDominantSwatch()
         {
-            int maxPop = Int32.MinValue;
-            Swatch maxSwatch = null;
-            for (int i = 0, count = mSwatches.Count; i < count; i++)
+            int maxPop = int.MinValue;
+            Swatch? maxSwatch = null;
+            for (int i = 0, count = _swatches.Count; i < count; i++)
             {
-                Swatch swatch = mSwatches[i];
-                if (swatch.GetPopulation() > maxPop)
+                Swatch swatch = _swatches[i];
+                if (swatch.Population > maxPop)
                 {
                     maxSwatch = swatch;
-                    maxPop = swatch.GetPopulation();
+                    maxPop = swatch.Population;
                 }
             }
             return maxSwatch;

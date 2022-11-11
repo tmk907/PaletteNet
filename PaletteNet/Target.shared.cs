@@ -105,25 +105,25 @@ namespace PaletteNet
             SetDefaultMutedSaturationValues(DARK_MUTED);
         }
 
-        readonly float[] mSaturationTargets = new float[3];
-        readonly float[] mLightnessTargets = new float[3];
-        readonly float[] mWeights = new float[3];
-        bool mIsExclusive = true; // default to true
+        readonly float[] _saturationTargets = new float[3];
+        readonly float[] _lightnessTargets = new float[3];
+        readonly float[] _weights = new float[3];
+        bool _isExclusive = true; // default to true
 
         public Target()
         {
-            SetTargetDefaultValues(mSaturationTargets);
-            SetTargetDefaultValues(mLightnessTargets);
+            SetTargetDefaultValues(_saturationTargets);
+            SetTargetDefaultValues(_lightnessTargets);
             SetDefaultWeights();
         }
 
         public Target(Target from)
         {
-            Array.Copy(from.mSaturationTargets, 0, mSaturationTargets, 0,
-                    mSaturationTargets.Length);
-            Array.Copy(from.mLightnessTargets, 0, mLightnessTargets, 0,
-                    mLightnessTargets.Length);
-            Array.Copy(from.mWeights, 0, mWeights, 0, mWeights.Length);
+            Array.Copy(from._saturationTargets, 0, _saturationTargets, 0,
+                    _saturationTargets.Length);
+            Array.Copy(from._lightnessTargets, 0, _lightnessTargets, 0,
+                    _lightnessTargets.Length);
+            Array.Copy(from._weights, 0, _weights, 0, _weights.Length);
         }
 
         #region Getters
@@ -132,55 +132,37 @@ namespace PaletteNet
         /// The minimum saturation value for this target.
         /// </summary>
         /// <returns>FloatRange(from = 0, to = 1)</returns>
-        public float GetMinimumSaturation()
-        {
-            return mSaturationTargets[INDEX_MIN];
-        }
+        public float MinimumSaturation => _saturationTargets[INDEX_MIN];
 
         /// <summary>
         /// The target saturation value for this target.
         /// </summary>
         /// <returns>FloatRange(from = 0, to = 1)</returns>
-        public float GetTargetSaturation()
-        {
-            return mSaturationTargets[INDEX_TARGET];
-        }
+        public float TargetSaturation => _saturationTargets[INDEX_TARGET];
 
         /// <summary>
         /// The maximum saturation value for this target.
         /// </summary>
         /// <returns>FloatRange(from = 0, to = 1)</returns>
-        public float GetMaximumSaturation()
-        {
-            return mSaturationTargets[INDEX_MAX];
-        }
+        public float MaximumSaturation => _saturationTargets[INDEX_MAX];
 
         /// <summary>
         /// The minimum lightness value for this target.
         /// </summary>
         /// <returns>FloatRange(from = 0, to = 1)</returns>
-        public float GetMinimumLightness()
-        {
-            return mLightnessTargets[INDEX_MIN];
-        }
+        public float MinimumLightness => _lightnessTargets[INDEX_MIN];
 
         /// <summary>
         /// The target lightness value for this target.
         /// </summary>
         /// <returns>FloatRange(from = 0, to = 1)</returns>
-        public float GetTargetLightness()
-        {
-            return mLightnessTargets[INDEX_TARGET];
-        }
+        public float TargetLightness => _lightnessTargets[INDEX_TARGET];
 
         /// <summary>
         /// The maximum lightness value for this target.
         /// </summary>
         /// <returns>FloatRange(from = 0, to = 1)</returns>
-        public float GetMaximumLightness()
-        {
-            return mLightnessTargets[INDEX_MAX];
-        }
+        public float MaximumLightness => _lightnessTargets[INDEX_MAX];
 
         /// <summary>
         /// Returns the weight of importance that this target places on a color's saturation within
@@ -189,10 +171,7 @@ namespace PaletteNet
         /// being close to the target value has on selection.
         /// </summary>
         /// <returns></returns>
-        public float GetSaturationWeight()
-        {
-            return mWeights[INDEX_WEIGHT_SAT];
-        }
+        public float SaturationWeight => _weights[INDEX_WEIGHT_SAT];
 
         /// <summary>
         /// Returns the weight of importance that this target places on a color's lightness within
@@ -201,10 +180,7 @@ namespace PaletteNet
         /// being close to the target value has on selection.
         /// </summary>
         /// <returns></returns>
-        public float GetLightnessWeight()
-        {
-            return mWeights[INDEX_WEIGHT_LUMA];
-        }
+        public float LightnessWeight => _weights[INDEX_WEIGHT_LUMA];
 
         /// <summary>
         /// Returns the weight of importance that this target places on a color's population within
@@ -213,10 +189,7 @@ namespace PaletteNet
         /// color's population being close to the most populous has on selection.
         /// </summary>
         /// <returns></returns>
-        public float GetPopulationWeight()
-        {
-            return mWeights[INDEX_WEIGHT_POP];
-        }
+        public float PopulationWeight => _weights[INDEX_WEIGHT_POP];
 
         #endregion
 
@@ -227,7 +200,7 @@ namespace PaletteNet
         /// <returns></returns>
         public bool IsExclusive()
         {
-            return mIsExclusive;
+            return _isExclusive;
         }
 
         private static void SetTargetDefaultValues(float[] values)
@@ -239,17 +212,17 @@ namespace PaletteNet
 
         private void SetDefaultWeights()
         {
-            mWeights[INDEX_WEIGHT_SAT] = WEIGHT_SATURATION;
-            mWeights[INDEX_WEIGHT_LUMA] = WEIGHT_LUMA;
-            mWeights[INDEX_WEIGHT_POP] = WEIGHT_POPULATION;
+            _weights[INDEX_WEIGHT_SAT] = WEIGHT_SATURATION;
+            _weights[INDEX_WEIGHT_LUMA] = WEIGHT_LUMA;
+            _weights[INDEX_WEIGHT_POP] = WEIGHT_POPULATION;
         }
 
         public void NormalizeWeights()
         {
             float sum = 0;
-            for (int i = 0, z = mWeights.Length; i < z; i++)
+            for (int i = 0, z = _weights.Length; i < z; i++)
             {
-                float weight = mWeights[i];
+                float weight = _weights[i];
                 if (weight > 0)
                 {
                     sum += weight;
@@ -257,11 +230,11 @@ namespace PaletteNet
             }
             if (sum != 0)
             {
-                for (int i = 0, z = mWeights.Length; i < z; i++)
+                for (int i = 0, z = _weights.Length; i < z; i++)
                 {
-                    if (mWeights[i] > 0)
+                    if (_weights[i] > 0)
                     {
-                        mWeights[i] /= sum;
+                        _weights[i] /= sum;
                     }
                 }
             }
@@ -269,33 +242,33 @@ namespace PaletteNet
 
         private static void SetDefaultDarkLightnessValues(Target target)
         {
-            target.mLightnessTargets[INDEX_TARGET] = TARGET_DARK_LUMA;
-            target.mLightnessTargets[INDEX_MAX] = MAX_DARK_LUMA;
+            target._lightnessTargets[INDEX_TARGET] = TARGET_DARK_LUMA;
+            target._lightnessTargets[INDEX_MAX] = MAX_DARK_LUMA;
         }
 
         private static void SetDefaultNormalLightnessValues(Target target)
         {
-            target.mLightnessTargets[INDEX_MIN] = MIN_NORMAL_LUMA;
-            target.mLightnessTargets[INDEX_TARGET] = TARGET_NORMAL_LUMA;
-            target.mLightnessTargets[INDEX_MAX] = MAX_NORMAL_LUMA;
+            target._lightnessTargets[INDEX_MIN] = MIN_NORMAL_LUMA;
+            target._lightnessTargets[INDEX_TARGET] = TARGET_NORMAL_LUMA;
+            target._lightnessTargets[INDEX_MAX] = MAX_NORMAL_LUMA;
         }
 
         private static void SetDefaultLightLightnessValues(Target target)
         {
-            target.mLightnessTargets[INDEX_MIN] = MIN_LIGHT_LUMA;
-            target.mLightnessTargets[INDEX_TARGET] = TARGET_LIGHT_LUMA;
+            target._lightnessTargets[INDEX_MIN] = MIN_LIGHT_LUMA;
+            target._lightnessTargets[INDEX_TARGET] = TARGET_LIGHT_LUMA;
         }
 
         private static void SetDefaultVibrantSaturationValues(Target target)
         {
-            target.mSaturationTargets[INDEX_MIN] = MIN_VIBRANT_SATURATION;
-            target.mSaturationTargets[INDEX_TARGET] = TARGET_VIBRANT_SATURATION;
+            target._saturationTargets[INDEX_MIN] = MIN_VIBRANT_SATURATION;
+            target._saturationTargets[INDEX_TARGET] = TARGET_VIBRANT_SATURATION;
         }
 
         private static void SetDefaultMutedSaturationValues(Target target)
         {
-            target.mSaturationTargets[INDEX_TARGET] = TARGET_MUTED_SATURATION;
-            target.mSaturationTargets[INDEX_MAX] = MAX_MUTED_SATURATION;
+            target._saturationTargets[INDEX_TARGET] = TARGET_MUTED_SATURATION;
+            target._saturationTargets[INDEX_MAX] = MAX_MUTED_SATURATION;
         }
 
 
@@ -304,14 +277,14 @@ namespace PaletteNet
         /// </summary>
         public sealed class Builder
         {
-            private readonly Target mTarget;
+            private readonly Target _target;
 
             /// <summary>
             /// Create a new Target builder from scratch.
             /// </summary>
             public Builder()
             {
-                mTarget = new Target();
+                _target = new Target();
             }
 
             /// <summary>
@@ -320,7 +293,7 @@ namespace PaletteNet
             /// <param name="target"></param>
             public Builder(Target target)
             {
-                mTarget = new Target(target);
+                _target = new Target(target);
             }
 
             /// <summary>
@@ -330,7 +303,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetMinimumSaturation(float value)
             {
-                mTarget.mSaturationTargets[INDEX_MIN] = value;
+                _target._saturationTargets[INDEX_MIN] = value;
                 return this;
             }
 
@@ -341,7 +314,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetTargetSaturation(float value)
             {
-                mTarget.mSaturationTargets[INDEX_TARGET] = value;
+                _target._saturationTargets[INDEX_TARGET] = value;
                 return this;
             }
 
@@ -352,7 +325,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetMaximumSaturation(float value)
             {
-                mTarget.mSaturationTargets[INDEX_MAX] = value;
+                _target._saturationTargets[INDEX_MAX] = value;
                 return this;
             }
 
@@ -363,7 +336,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetMinimumLightness(float value)
             {
-                mTarget.mLightnessTargets[INDEX_MIN] = value;
+                _target._lightnessTargets[INDEX_MIN] = value;
                 return this;
             }
 
@@ -374,7 +347,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetTargetLightness(float value)
             {
-                mTarget.mLightnessTargets[INDEX_TARGET] = value;
+                _target._lightnessTargets[INDEX_TARGET] = value;
                 return this;
             }
 
@@ -385,7 +358,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetMaximumLightness(float value)
             {
-                mTarget.mLightnessTargets[INDEX_MAX] = value;
+                _target._lightnessTargets[INDEX_MAX] = value;
                 return this;
             }
 
@@ -400,7 +373,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetSaturationWeight(float weight)
             {
-                mTarget.mWeights[INDEX_WEIGHT_SAT] = weight;
+                _target._weights[INDEX_WEIGHT_SAT] = weight;
                 return this;
             }
 
@@ -415,7 +388,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetLightnessWeight(float weight)
             {
-                mTarget.mWeights[INDEX_WEIGHT_LUMA] = weight;
+                _target._weights[INDEX_WEIGHT_LUMA] = weight;
                 return this;
             }
 
@@ -431,7 +404,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetPopulationWeight(float weight)
             {
-                mTarget.mWeights[INDEX_WEIGHT_POP] = weight;
+                _target._weights[INDEX_WEIGHT_POP] = weight;
                 return this;
             }
 
@@ -443,7 +416,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Builder SetExclusive(bool exclusive)
             {
-                mTarget.mIsExclusive = exclusive;
+                _target._isExclusive = exclusive;
                 return this;
             }
 
@@ -453,7 +426,7 @@ namespace PaletteNet
             /// <returns></returns>
             public Target Build()
             {
-                return mTarget;
+                return _target;
             }
         }
     }

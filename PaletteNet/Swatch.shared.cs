@@ -24,43 +24,42 @@ namespace PaletteNet
         static readonly float MIN_CONTRAST_TITLE_TEXT = 3.0f;
         static readonly float MIN_CONTRAST_BODY_TEXT = 4.5f;
 
-        private readonly int mRed, mGreen, mBlue;
-        private readonly int mRgb;
-        private readonly int mPopulation;
+        private readonly int _red, _green, _blue;
+        private readonly int _rgb;
+        private readonly int _population;
 
-        private bool mGeneratedTextColors;
-        private int mTitleTextColor;
-        private int mBodyTextColor;
+        private bool _generatedTextColors;
+        private int _titleTextColor;
+        private int _bodyTextColor;
 
-        private float[] mHsl;
+        private float[] _hsl;
 
         public Swatch(int color, int population)
         {
-            mRed = ColorHelpers.Red(color);
-            mGreen = ColorHelpers.Green(color);
-            mBlue = ColorHelpers.Blue(color);
-            mRgb = color;
-            mPopulation = population;
+            _red = ColorHelpers.Red(color);
+            _green = ColorHelpers.Green(color);
+            _blue = ColorHelpers.Blue(color);
+            _rgb = color;
+            _population = population;
+            _hsl = new float[3];
         }
 
         public Swatch(float[] hsl, int population) : this(ColorHelpers.HSLToColor(hsl), population)
         {
-            mHsl = hsl;
+            _hsl = hsl;
         }
 
         public Swatch(int red, int green, int blue, int population)
         {
-            mRed = red;
-            mGreen = green;
-            mBlue = blue;
-            mRgb = ColorHelpers.RGB(red, green, blue);
-            mPopulation = population;
+            _red = red;
+            _green = green;
+            _blue = blue;
+            _rgb = ColorHelpers.RGB(red, green, blue);
+            _population = population;
+            _hsl = new float[3];
         }
 
-        public int GetRgb()
-        {
-            return mRgb;
-        }
+        public int Rgb => _rgb;
 
         /// <summary>
         /// Return this swatch's HSL values.
@@ -71,32 +70,32 @@ namespace PaletteNet
         /// <returns></returns>
         public float[] GetHsl()
         {
-            if (mHsl == null)
+            if (_hsl == null)
             {
-                mHsl = new float[3];
+                _hsl = new float[3];
             }
-            ColorHelpers.RGBToHSL(mRed, mGreen, mBlue, mHsl);
-            return mHsl;
+            ColorHelpers.RGBToHSL(_red, _green, _blue, _hsl);
+            return _hsl;
         }
 
         /// <summary>
         /// return the number of pixels represented by this swatch
         /// </summary>
         /// <returns></returns>
-        public int GetPopulation()
-        {
-            return mPopulation;
-        }
+        public int Population => _population;
 
         /// <summary>
         /// Returns an appropriate color to use for any 'title' text which is displayed over this
         /// Swatch's color. This color is guaranteed to have sufficient contrast.
         /// </summary>
         /// <returns></returns>
-        public int GetTitleTextColor()
+        public int TitleTextColor
         {
-            EnsureTextColorsGenerated();
-            return mTitleTextColor;
+            get
+            {
+                EnsureTextColorsGenerated();
+                return _titleTextColor;
+            }
         }
 
         /// <summary>
@@ -104,54 +103,57 @@ namespace PaletteNet
         /// Swatch's color. This color is guaranteed to have sufficient contrast.
         /// </summary>
         /// <returns></returns>
-        public int GetBodyTextColor()
+        public int BodyTextColor
         {
-            EnsureTextColorsGenerated();
-            return mBodyTextColor;
+            get
+            {
+                EnsureTextColorsGenerated();
+                return _bodyTextColor;
+            }
         }
 
         private void EnsureTextColorsGenerated()
         {
-            if (!mGeneratedTextColors)
+            if (!_generatedTextColors)
             {
                 // First check white, as most colors will be dark
                 int lightBodyAlpha = ColorHelpers.CalculateMinimumAlpha(
-                        ColorHelpers.WHITE, mRgb, MIN_CONTRAST_BODY_TEXT);
+                        ColorHelpers.WHITE, _rgb, MIN_CONTRAST_BODY_TEXT);
                 int lightTitleAlpha = ColorHelpers.CalculateMinimumAlpha(
-                        ColorHelpers.WHITE, mRgb, MIN_CONTRAST_TITLE_TEXT);
+                        ColorHelpers.WHITE, _rgb, MIN_CONTRAST_TITLE_TEXT);
 
                 if (lightBodyAlpha != -1 && lightTitleAlpha != -1)
                 {
                     // If we found valid light values, use them and return
-                    mBodyTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.WHITE, lightBodyAlpha);
-                    mTitleTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.WHITE, lightTitleAlpha);
-                    mGeneratedTextColors = true;
+                    _bodyTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.WHITE, lightBodyAlpha);
+                    _titleTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.WHITE, lightTitleAlpha);
+                    _generatedTextColors = true;
                     return;
                 }
 
                 int darkBodyAlpha = ColorHelpers.CalculateMinimumAlpha(
-                        ColorHelpers.BLACK, mRgb, MIN_CONTRAST_BODY_TEXT);
+                        ColorHelpers.BLACK, _rgb, MIN_CONTRAST_BODY_TEXT);
                 int darkTitleAlpha = ColorHelpers.CalculateMinimumAlpha(
-                        ColorHelpers.BLACK, mRgb, MIN_CONTRAST_TITLE_TEXT);
+                        ColorHelpers.BLACK, _rgb, MIN_CONTRAST_TITLE_TEXT);
 
                 if (darkBodyAlpha != -1 && darkBodyAlpha != -1)
                 {
                     // If we found valid dark values, use them and return
-                    mBodyTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.BLACK, darkBodyAlpha);
-                    mTitleTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.BLACK, darkTitleAlpha);
-                    mGeneratedTextColors = true;
+                    _bodyTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.BLACK, darkBodyAlpha);
+                    _titleTextColor = ColorHelpers.SetAlphaComponent(ColorHelpers.BLACK, darkTitleAlpha);
+                    _generatedTextColors = true;
                     return;
                 }
 
                 // If we reach here then we can not find title and body values which use the same
                 // lightness, we need to use mismatched values
-                mBodyTextColor = lightBodyAlpha != -1
+                _bodyTextColor = lightBodyAlpha != -1
                         ? ColorHelpers.SetAlphaComponent(ColorHelpers.WHITE, lightBodyAlpha)
                         : ColorHelpers.SetAlphaComponent(ColorHelpers.BLACK, darkBodyAlpha);
-                mTitleTextColor = lightTitleAlpha != -1
+                _titleTextColor = lightTitleAlpha != -1
                         ? ColorHelpers.SetAlphaComponent(ColorHelpers.WHITE, lightTitleAlpha)
                         : ColorHelpers.SetAlphaComponent(ColorHelpers.BLACK, darkTitleAlpha);
-                mGeneratedTextColors = true;
+                _generatedTextColors = true;
             }
         }
     }

@@ -7,8 +7,7 @@ namespace PaletteNet.Windows
 {
     public class PaletteColors
     {
-        public int DefaultColor;
-
+        public int DefaultColor { get; }
         public Palette Palette { get; }
 
         public static PaletteColors Generate(IBitmapHelper bitmapHelper)
@@ -39,42 +38,42 @@ namespace PaletteNet.Windows
 
         public Color GetDominantColor()
         {
-            return Palette.GetDominantColorValue(DefaultColor).ToColor();
+            return (Palette.DominantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetVibrantColor()
         {
-            return Palette.GetVibrantColorValue(DefaultColor).ToColor();
+            return (Palette.VibrantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetLightVibrantColor()
         {
-            return Palette.GetLightVibrantColorValue(DefaultColor).ToColor();
+            return (Palette.LightVibrantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetDarkVibrantColor()
         {
-            return Palette.GetDarkVibrantColorValue(DefaultColor).ToColor();
+            return (Palette.DarkVibrantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetMutedColor()
         {
-            return Palette.GetMutedColorValue(DefaultColor).ToColor();
+            return (Palette.MutedColor ?? DefaultColor).ToColor();
         }
 
         public Color GetLightMutedColor()
         {
-            return Palette.GetLightMutedColorValue(DefaultColor).ToColor();
+            return (Palette.LightMutedColor ?? DefaultColor).ToColor();
         }
 
         public Color GetDarkMutedColor()
         {
-            return Palette.GetDarkMutedColorValue(DefaultColor).ToColor();
+            return (Palette.DarkMutedColor ?? DefaultColor).ToColor();
         }
 
         public IEnumerable<Color> GetAllColors()
         {
-            return Palette.GetSwatches().Select(x => x.GetRgb().ToColor());
+            return Palette.Swatches.Select(x => x.Rgb.ToColor());
         }
     }
 }

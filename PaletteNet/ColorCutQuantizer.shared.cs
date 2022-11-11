@@ -34,19 +34,19 @@ namespace PaletteNet
      */
     public class ColorCutQuantizer
     {
-        const int COMPONENT_RED = -3;
-        const int COMPONENT_GREEN = -2;
-        const int COMPONENT_BLUE = -1;
+        private const int COMPONENT_RED = -3;
+        private const int COMPONENT_GREEN = -2;
+        private const int COMPONENT_BLUE = -1;
 
         private const int QUANTIZE_WORD_WIDTH = 5;
         private const int QUANTIZE_WORD_MASK = (1 << QUANTIZE_WORD_WIDTH) - 1;
 
-        static int[] mColors;
-        static int[] mHistogram;
-        readonly List<Swatch> mQuantizedColors;
-        readonly IFilter[] mFilters;
+        private int[] _colors;
+        private int[] _histogram;
+        private readonly List<Swatch> _quantizedColors;
+        private readonly IFilter[]? _filters;
 
-        private readonly float[] mTempHsl = new float[3];
+        private readonly float[] _tempHsl = new float[3];
 
         /// <summary>
         /// 
@@ -54,12 +54,12 @@ namespace PaletteNet
         /// <param name="pixels">histogram representing an image's pixel data</param>
         /// <param name="maxColors">The maximum number of colors that should be in the result palette.</param>
         /// <param name="filters">Set of filters to use in the quantization stage</param>
-        public ColorCutQuantizer(int[] pixels, int maxColors, IFilter[] filters)
+        public ColorCutQuantizer(int[] pixels, int maxColors, IFilter[]? filters)
         {
-            mFilters = filters;
+            _filters = filters;
 
-            mHistogram = new int[1 << (QUANTIZE_WORD_WIDTH * 3)];
-            int[] hist = mHistogram;
+            _histogram = new int[1 << (QUANTIZE_WORD_WIDTH * 3)];
+            int[] hist = _histogram;
             for (int i = 0; i < pixels.Length; i++)
             {
                 int quantizedColor = QuantizeFromRgb888(pixels[i]);
@@ -86,8 +86,8 @@ namespace PaletteNet
             }
 
             // Now lets go through create an array consisting of only distinct colors
-            mColors = new int[distinctColorCount];
-            int[] colors = mColors;
+            _colors = new int[distinctColorCount];
+            int[] colors = _colors;
             int distinctColorIndex = 0;
             for (int color = 0; color < hist.Length; color++)
             {
@@ -100,16 +100,16 @@ namespace PaletteNet
             if (distinctColorCount <= maxColors)
             {
                 // The image has fewer colors than the maximum requested, so just return the colors
-                mQuantizedColors = new List<Swatch>();
+                _quantizedColors = new List<Swatch>();
                 foreach (int color in colors)
                 {
-                    mQuantizedColors.Add(new Swatch(ApproximateToRgb888(color), hist[color]));
+                    _quantizedColors.Add(new Swatch(ApproximateToRgb888(color), hist[color]));
                 }
             }
             else
             {
                 // We need use quantization to reduce the number of colors
-                mQuantizedColors = QuantizePixels(maxColors);
+                _quantizedColors = QuantizePixels(maxColors);
             }
         }
 
@@ -119,7 +119,7 @@ namespace PaletteNet
         /// <returns>the list of quantized colors</returns>
         public List<Swatch> GetQuantizedColors()
         {
-            return mQuantizedColors;
+            return _quantizedColors;
         }
 
         private List<Swatch> QuantizePixels(int maxColors)
@@ -129,7 +129,7 @@ namespace PaletteNet
             MaxHeap<Vbox> pq = new MaxHeap<Vbox>(new VBOX_COMPARATOR_VOLUME());
 
             // To start, offer a box which contains all of the colors
-            pq.Add(new Vbox(0, mColors.Length - 1));
+            pq.Add(new Vbox(0, _colors.Length - 1, _colors, _histogram));
 
             // Now go through the boxes, splitting them until we have reached maxColors or there are no
             // more boxes to split
@@ -149,12 +149,12 @@ namespace PaletteNet
         {
             while (queue.Count < maxSize)
             {
-                Vbox vbox = queue.ExtractDominating();
+                var vbox = queue.ExtractDominating();
 
                 if (vbox != null && vbox.CanSplit())
                 {
                     // First split the box, and offer the result
-                    queue.Add(vbox.SplitBox());
+                    queue.Add(vbox.SplitBox(_colors, _histogram));
 
                     // Then offer the box back
                     queue.Add(vbox);
@@ -172,7 +172,7 @@ namespace PaletteNet
             List<Swatch> colors = new List<Swatch>(vboxes.Count);
             foreach (Vbox vbox in vboxes)
             {
-                Swatch swatch = vbox.GetAverageColor();
+                Swatch swatch = vbox.GetAverageColor(_colors, _histogram);
                 if (!ShouldIgnoreColor(swatch))
                 {
                     // As we're averaging a color box, we can still get colors which we do not want, so
@@ -189,26 +189,26 @@ namespace PaletteNet
         private class Vbox
         {
             // lower and upper index are inclusive
-            private int mLowerIndex;
-            private int mUpperIndex;
+            private readonly int _lowerIndex;
+            private int _upperIndex;
             // Population of colors within this box
-            private int mPopulation;
+            private int _population;
 
-            private int mMinRed, mMaxRed;
-            private int mMinGreen, mMaxGreen;
-            private int mMinBlue, mMaxBlue;
+            private int _minRed, _maxRed;
+            private int _minGreen, _maxGreen;
+            private int _minBlue, _maxBlue;
 
-            public Vbox(int lowerIndex, int upperIndex)
+            public Vbox(int lowerIndex, int upperIndex, int[] colors, int[] histogram)
             {
-                mLowerIndex = lowerIndex;
-                mUpperIndex = upperIndex;
-                FitBox();
+                _lowerIndex = lowerIndex;
+                _upperIndex = upperIndex;
+                FitBox(colors, histogram);
             }
 
             public int GetVolume()
             {
-                return (mMaxRed - mMinRed + 1) * (mMaxGreen - mMinGreen + 1) *
-                        (mMaxBlue - mMinBlue + 1);
+                return (_maxRed - _minRed + 1) * (_maxGreen - _minGreen + 1) *
+                        (_maxBlue - _minBlue + 1);
             }
 
             public bool CanSplit()
@@ -218,17 +218,14 @@ namespace PaletteNet
 
             public int GetColorCount()
             {
-                return 1 + mUpperIndex - mLowerIndex;
+                return 1 + _upperIndex - _lowerIndex;
             }
 
             /// <summary>
             /// Recomputes the boundaries of this box to tightly fit the colors within the box.
             /// </summary>
-            public void FitBox()
-            {
-                int[] colors = mColors;
-                int[] hist = mHistogram;
-
+            public void FitBox(int[] colors, int[] hist)
+            {                
                 // Reset the min and max to opposite values
                 int minRed, minGreen, minBlue;
                 minRed = minGreen = minBlue = Int32.MaxValue;
@@ -236,7 +233,7 @@ namespace PaletteNet
                 maxRed = maxGreen = maxBlue = Int32.MinValue;
                 int count = 0;
 
-                for (int i = mLowerIndex; i <= mUpperIndex; i++)
+                for (int i = _lowerIndex; i <= _upperIndex; i++)
                 {
                     int color = colors[i];
                     count += hist[color];
@@ -270,20 +267,20 @@ namespace PaletteNet
                     }
                 }
 
-                mMinRed = minRed;
-                mMaxRed = maxRed;
-                mMinGreen = minGreen;
-                mMaxGreen = maxGreen;
-                mMinBlue = minBlue;
-                mMaxBlue = maxBlue;
-                mPopulation = count;
+                _minRed = minRed;
+                _maxRed = maxRed;
+                _minGreen = minGreen;
+                _maxGreen = maxGreen;
+                _minBlue = minBlue;
+                _maxBlue = maxBlue;
+                _population = count;
             }
 
             /// <summary>
             /// Split this color box at the mid-point along its longest dimension
             /// </summary>
             /// <returns>new ColorBox</returns>
-            public Vbox SplitBox()
+            public Vbox SplitBox(int[] colors, int[] histogram)
             {
                 if (!CanSplit())
                 {
@@ -291,13 +288,13 @@ namespace PaletteNet
                 }
 
                 // find median along the longest dimension
-                int splitPoint = FindSplitPoint();
+                int splitPoint = FindSplitPoint(colors, histogram);
 
-                Vbox newBox = new Vbox(splitPoint + 1, mUpperIndex);
+                Vbox newBox = new Vbox(splitPoint + 1, _upperIndex, colors, histogram);
 
                 // Now change this box's upperIndex and recompute the color boundaries
-                mUpperIndex = splitPoint;
-                FitBox();
+                _upperIndex = splitPoint;
+                FitBox(colors, histogram);
 
                 return newBox;
             }
@@ -308,9 +305,9 @@ namespace PaletteNet
             /// <returns>dimension which this box is largest in</returns>
             int GetLongestColorDimension()
             {
-                int redLength = mMaxRed - mMinRed;
-                int greenLength = mMaxGreen - mMinGreen;
-                int blueLength = mMaxBlue - mMinBlue;
+                int redLength = _maxRed - _minRed;
+                int greenLength = _maxGreen - _minGreen;
+                int blueLength = _maxBlue - _minBlue;
 
                 if (redLength >= greenLength && redLength >= blueLength)
                 {
@@ -333,52 +330,48 @@ namespace PaletteNet
             /// until a color is found with at least the midpoint of the whole box's dimension midpoint.
             /// </summary>
             /// <returns>index of the colors array to split from</returns>
-            int FindSplitPoint()
+            int FindSplitPoint(int[] colors, int[] hist)
             {
                 int longestDimension = GetLongestColorDimension();
-                int[] colors = mColors;
-                int[] hist = mHistogram;
 
                 // We need to sort the colors in this box based on the longest color dimension.
                 // As we can't use a Comparator to define the sort logic, we modify each color so that
                 // its most significant is the desired dimension
-                ModifySignificantOctet(colors, longestDimension, mLowerIndex, mUpperIndex);
+                ModifySignificantOctet(colors, longestDimension, _lowerIndex, _upperIndex);
 
                 // Now sort... Arrays.sort uses a exclusive toIndex so we need to add 1
-                Array.Sort(colors, mLowerIndex, mUpperIndex + 1 - mLowerIndex);
+                Array.Sort(colors, _lowerIndex, _upperIndex + 1 - _lowerIndex);
 
                 // Now revert all of the colors so that they are packed as RGB again
-                ModifySignificantOctet(colors, longestDimension, mLowerIndex, mUpperIndex);
+                ModifySignificantOctet(colors, longestDimension, _lowerIndex, _upperIndex);
 
-                int midPoint = mPopulation / 2;
-                for (int i = mLowerIndex, count = 0; i <= mUpperIndex; i++)
+                int midPoint = _population / 2;
+                for (int i = _lowerIndex, count = 0; i <= _upperIndex; i++)
                 {
                     count += hist[colors[i]];
                     if (count >= midPoint)
                     {
                         // we never want to split on the upperIndex, as this will result in the same
                         // box
-                        return Math.Min(mUpperIndex - 1, i);
+                        return Math.Min(_upperIndex - 1, i);
                     }
                 }
 
-                return mLowerIndex;
+                return _lowerIndex;
             }
 
             /// <summary>
             /// 
             /// </summary>
             /// <returns>the average color of this box.</returns>
-            public Swatch GetAverageColor()
+            public Swatch GetAverageColor(int[] colors, int[] hist)
             {
-                int[] colors = mColors;
-                int[] hist = mHistogram;
                 int redSum = 0;
                 int greenSum = 0;
                 int blueSum = 0;
                 int totalPopulation = 0;
 
-                for (int i = mLowerIndex; i <= mUpperIndex; i++)
+                for (int i = _lowerIndex; i <= _upperIndex; i++)
                 {
                     int color = colors[i];
                     int colorPopulation = hist[color];
@@ -438,22 +431,22 @@ namespace PaletteNet
         private bool ShouldIgnoreColor(int color565)
         {
             int rgb = ApproximateToRgb888(color565);
-            ColorHelpers.ColorToHSL(rgb, mTempHsl);
-            return ShouldIgnoreColor(rgb, mTempHsl);
+            ColorHelpers.ColorToHSL(rgb, _tempHsl);
+            return ShouldIgnoreColor(rgb, _tempHsl);
         }
 
         private bool ShouldIgnoreColor(Swatch color)
         {
-            return ShouldIgnoreColor(color.GetRgb(), color.GetHsl());
+            return ShouldIgnoreColor(color.Rgb, color.GetHsl());
         }
 
         private bool ShouldIgnoreColor(int rgb, float[] hsl)
         {
-            if (mFilters != null && mFilters.Length > 0)
+            if (_filters != null && _filters.Length > 0)
             {
-                for (int i = 0, count = mFilters.Length; i < count; i++)
+                for (int i = 0, count = _filters.Length; i < count; i++)
                 {
-                    if (!mFilters[i].IsAllowed(rgb, hsl))
+                    if (!_filters[i].IsAllowed(rgb, hsl))
                     {
                         return true;
                     }
@@ -467,9 +460,13 @@ namespace PaletteNet
         /// </summary>
         private class VBOX_COMPARATOR_VOLUME : Comparer<Vbox>
         {
-            public override int Compare(Vbox rhs, Vbox lhs)
+            public override int Compare(Vbox? rhs, Vbox? lhs)
             {
-                return rhs.GetVolume() - lhs.GetVolume();
+                if (rhs == null && lhs != null) return -1;
+                if (rhs == null && lhs == null) return 0;
+                if (rhs != null && lhs == null) return 1;
+
+                return rhs!.GetVolume() - lhs!.GetVolume();
             }
         }
 
@@ -510,7 +507,7 @@ namespace PaletteNet
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        static int QuantizedRed(int color)
+        private static int QuantizedRed(int color)
         {
             return (color >> (QUANTIZE_WORD_WIDTH + QUANTIZE_WORD_WIDTH)) & QUANTIZE_WORD_MASK;
         }
@@ -520,7 +517,7 @@ namespace PaletteNet
         /// </summary>
         /// <param name="color"></param>
         /// <returns>green component of a quantized color</returns>
-        static int QuantizedGreen(int color)
+        private static int QuantizedGreen(int color)
         {
             return (color >> QUANTIZE_WORD_WIDTH) & QUANTIZE_WORD_MASK;
         }
@@ -530,7 +527,7 @@ namespace PaletteNet
         /// </summary>
         /// <param name="color"></param>
         /// <returns>blue component of a quantized color</returns>
-        static int QuantizedBlue(int color)
+        private static int QuantizedBlue(int color)
         {
             return color & QUANTIZE_WORD_MASK;
         }

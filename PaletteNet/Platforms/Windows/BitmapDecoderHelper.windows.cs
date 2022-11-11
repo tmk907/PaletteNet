@@ -10,17 +10,16 @@ namespace PaletteNet.Windows
         private int mResizeArea = DEFAULT_RESIZE_BITMAP_AREA;
         private int mResizeMaxDimension = -1;
 
-        private BitmapDecoder decoder;
-        private byte[] pixels;
+        private readonly BitmapDecoder _decoder;
 
         public BitmapDecoderHelper(BitmapDecoder decoder)
         {
-            this.decoder = decoder;
+            this._decoder = decoder;
         }
 
         public int[] ScaleDownAndGetPixels()
         {
-            Task.Run(() => ScaleBitmapDown()).Wait();
+            byte[] pixels = Task.Run(() => ScaleBitmapDown()).Result;
             int[] subsetPixels = new int[pixels.Length / 4];
 
             for (int i = 0; i < subsetPixels.Length - 1; i++)
@@ -30,13 +29,13 @@ namespace PaletteNet.Windows
             return subsetPixels;
         }
 
-        private async Task ScaleBitmapDown()
+        private async Task<byte[]> ScaleBitmapDown()
         {
             double scaleRatio = -1;
 
             if (mResizeArea > 0)
             {
-                uint bitmapArea = decoder.PixelWidth * decoder.PixelHeight;
+                uint bitmapArea = _decoder.PixelWidth * _decoder.PixelHeight;
                 if (bitmapArea > mResizeArea)
                 {
                     scaleRatio = Math.Sqrt(mResizeArea / (double)bitmapArea);
@@ -44,7 +43,7 @@ namespace PaletteNet.Windows
             }
             else if (mResizeMaxDimension > 0)
             {
-                int maxDimension = Math.Max((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                int maxDimension = Math.Max((int)_decoder.PixelWidth, (int)_decoder.PixelHeight);
                 if (maxDimension > mResizeMaxDimension)
                 {
                     scaleRatio = mResizeMaxDimension / (double)maxDimension;
@@ -56,9 +55,9 @@ namespace PaletteNet.Windows
             if (scaleRatio > 0)
             {
                 BitmapTransform bt = new BitmapTransform();
-                bt.ScaledHeight = (uint)Math.Ceiling(decoder.PixelHeight * scaleRatio);
-                bt.ScaledWidth = (uint)Math.Ceiling(decoder.PixelWidth * scaleRatio);
-                pixelsData = await decoder.GetPixelDataAsync(
+                bt.ScaledHeight = (uint)Math.Ceiling(_decoder.PixelHeight * scaleRatio);
+                bt.ScaledWidth = (uint)Math.Ceiling(_decoder.PixelWidth * scaleRatio);
+                pixelsData = await _decoder.GetPixelDataAsync(
                     BitmapPixelFormat.Bgra8,
                     BitmapAlphaMode.Straight, bt,
                     ExifOrientationMode.IgnoreExifOrientation,
@@ -66,9 +65,9 @@ namespace PaletteNet.Windows
             }
             else
             {
-                pixelsData = await decoder.GetPixelDataAsync();
+                pixelsData = await _decoder.GetPixelDataAsync();
             }
-            pixels = pixelsData.DetachPixelData();
+            return pixelsData.DetachPixelData();
         }
     }
 }

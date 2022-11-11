@@ -6,8 +6,8 @@ namespace PaletteNet.Android
 {
     public class PaletteColors
     {
-        private readonly Palette _palette;
-        private readonly int _defaultColor;
+        public int DefaultColor { get; }
+        public Palette Palette { get; }
 
         public static PaletteColors Generate(IBitmapHelper bitmapHelper)
         {
@@ -25,54 +25,54 @@ namespace PaletteNet.Android
 
         public PaletteColors(Palette palette)
         {
-            _palette = palette;
-            _defaultColor = Color.Transparent.ToInt();
+            Palette = palette;
+            DefaultColor = Color.Transparent.ToInt();
         }
 
         public PaletteColors(Palette palette, Color defaultColor)
         {
-            _palette = palette;
-            _defaultColor = defaultColor.ToInt();
+            Palette = palette;
+            DefaultColor = defaultColor.ToInt();
         }
 
         public Color GetDominantColor()
         {
-            return _palette.GetDominantColorValue(_defaultColor).ToColor();
+            return (Palette.DominantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetVibrantColor()
         {
-            return _palette.GetVibrantColorValue(_defaultColor).ToColor();
+            return (Palette.VibrantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetLightVibrantColor()
         {
-            return _palette.GetLightVibrantColorValue(_defaultColor).ToColor();
+            return (Palette.LightVibrantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetDarkVibrantColor()
         {
-            return _palette.GetDarkVibrantColorValue(_defaultColor).ToColor();
+            return (Palette.DarkVibrantColor ?? DefaultColor).ToColor();
         }
 
         public Color GetMutedColor()
         {
-            return _palette.GetMutedColorValue(_defaultColor).ToColor();
+            return (Palette.MutedColor ?? DefaultColor).ToColor();
         }
 
         public Color GetLightMutedColor()
         {
-            return _palette.GetLightMutedColorValue(_defaultColor).ToColor();
+            return (Palette.LightMutedColor ?? DefaultColor).ToColor();
         }
 
         public Color GetDarkMutedColor()
         {
-            return _palette.GetDarkMutedColorValue(_defaultColor).ToColor();
+            return (Palette.DarkMutedColor ?? DefaultColor).ToColor();
         }
 
         public IEnumerable<Color> GetAllColors()
         {
-            return _palette.GetSwatches().Select(x => x.GetRgb().ToColor());
+            return Palette.Swatches.Select(x => x.Rgb.ToColor());
         }
     }
 }

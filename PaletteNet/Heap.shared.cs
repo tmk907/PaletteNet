@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PaletteNet
 {
-    public abstract class Heap<T> : IEnumerable<T>
+    public abstract class Heap<T> : IEnumerable<T> where T : class
     {
         private const int InitialCapacity = 0;
         private const int GrowFactor = 2;
@@ -77,7 +77,7 @@ namespace PaletteNet
             return _heap[0];
         }
 
-        public T ExtractDominating()
+        public T? ExtractDominating()
         {
             //if (Count == 0) throw new InvalidOperationException("Heap is empty");
             if (Count == 0) return default(T);
@@ -156,7 +156,7 @@ namespace PaletteNet
         }
     }
 
-    public class MaxHeap<T> : Heap<T>
+    public class MaxHeap<T> : Heap<T> where T : class
     {
         public MaxHeap()
             : this(Comparer<T>.Default)
@@ -183,7 +183,7 @@ namespace PaletteNet
         }
     }
 
-    public class MinHeap<T> : Heap<T>
+    public class MinHeap<T> : Heap<T> where T : class
     {
         public MinHeap()
             : this(Comparer<T>.Default)
