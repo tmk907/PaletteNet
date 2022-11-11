@@ -93,9 +93,9 @@ namespace PaletteNet
         /// Swatch's color. This color is guaranteed to have sufficient contrast.
         /// </summary>
         /// <returns></returns>
-        public int getTitleTextColor()
+        public int GetTitleTextColor()
         {
-            ensureTextColorsGenerated();
+            EnsureTextColorsGenerated();
             return mTitleTextColor;
         }
 
@@ -104,13 +104,13 @@ namespace PaletteNet
         /// Swatch's color. This color is guaranteed to have sufficient contrast.
         /// </summary>
         /// <returns></returns>
-        public int getBodyTextColor()
+        public int GetBodyTextColor()
         {
-            ensureTextColorsGenerated();
+            EnsureTextColorsGenerated();
             return mBodyTextColor;
         }
 
-        private void ensureTextColorsGenerated()
+        private void EnsureTextColorsGenerated()
         {
             if (!mGeneratedTextColors)
             {
