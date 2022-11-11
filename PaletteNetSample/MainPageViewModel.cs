@@ -5,6 +5,7 @@ using PaletteNet.Windows;
 using Windows.Graphics.Imaging;
 using Windows.UI;
 using System.Collections.ObjectModel;
+using PaletteNet;
 
 namespace PaletteNetSample
 {
@@ -20,18 +21,29 @@ namespace PaletteNetSample
 
             var palette = PaletteNet.Windows.PaletteColors.Generate(new BitmapDecoderHelper(decoder));
 
-            PaletteColors.Add(new ColorItem { Color = palette.GetDominantColor(), Description = "Dominant" });
-            PaletteColors.Add(new ColorItem { Color = palette.GetLightVibrantColor(), Description = "Light Vibrant" });
-            PaletteColors.Add(new ColorItem { Color = palette.GetVibrantColor(), Description = "Vibrant" });
-            PaletteColors.Add(new ColorItem { Color = palette.GetDarkVibrantColor(), Description = "Dark Vibrant" });
-            PaletteColors.Add(new ColorItem { Color = palette.GetLightMutedColor(), Description = "Light Muted" });
-            PaletteColors.Add(new ColorItem { Color = palette.GetMutedColor(), Description = "Muted" });
-            PaletteColors.Add(new ColorItem { Color = palette.GetDarkMutedColor(), Description = "Dark Muted" });
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetDominantSwatch(), "Dominant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetLightVibrantSwatch(), "Light Vibrant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetVibrantSwatch(), "Vibrant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetDarkVibrantSwatch(), "Dark Vibrant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetLightMutedSwatch(), "Light Muted"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetMutedSwatch(), "Muted"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.GetDarkMutedSwatch(), "Dark Muted"));
 
-            foreach(var c in palette.GetAllColors())
+            foreach(var swatch in palette.Palette.GetSwatches())
             {
-                AllColors.Add(new ColorItem { Color = c});
+                AllColors.Add(CreateColorItem(swatch, ""));
             }
+        }
+
+        private ColorItem CreateColorItem(Swatch swatch, string description)
+        {
+            return new ColorItem
+            {
+                Color = (swatch?.GetRgb() ?? 0).ToColor(),
+                TitleColor = (swatch?.GetTitleTextColor() ?? 0).ToColor(),
+                BodyColor = (swatch?.GetBodyTextColor() ?? 0).ToColor(),
+                Description = description
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -56,5 +68,8 @@ namespace PaletteNetSample
     {
         public string Description { get; set; }
         public Color Color { get; set; }
+        public Color TitleColor { get; set; }
+        public Color BodyColor { get; set; }
+
     }
 }

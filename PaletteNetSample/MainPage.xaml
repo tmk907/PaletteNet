@@ -51,7 +51,10 @@
                 <DataTemplate x:DataType="local:ColorItem">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{x:Bind Description}" />
-                        <local:ColorControl Color="{x:Bind Color}" />
+                        <local:ColorControl
+                            BodyColor="{x:Bind BodyColor}"
+                            TitleColor="{x:Bind TitleColor}"
+                            Color="{x:Bind Color}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -66,7 +69,10 @@
                 <DataTemplate x:DataType="local:ColorItem">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{x:Bind Description}" />
-                        <local:ColorControl Color="{x:Bind Color}" />
+                        <local:ColorControl
+                            BodyColor="{x:Bind BodyColor}"
+                            TitleColor="{x:Bind TitleColor}"
+                            Color="{x:Bind Color}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

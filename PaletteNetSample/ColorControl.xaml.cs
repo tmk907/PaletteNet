@@ -29,6 +29,25 @@ namespace PaletteNetSample
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(ColorControl), new PropertyMetadata(Colors.Transparent));
 
+        public Color TitleColor
+        {
+            get { return (Color)GetValue(TitleColorProperty); }
+            set { SetValue(TitleColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TitleColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleColorProperty =
+            DependencyProperty.Register("TitleColor", typeof(Color), typeof(ColorControl), new PropertyMetadata(Colors.Transparent));
+
+        public Color BodyColor
+        {
+            get { return (Color)GetValue(BodyColorProperty); }
+            set { SetValue(BodyColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BodyColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BodyColorProperty =
+            DependencyProperty.Register("BodyColor", typeof(Color), typeof(ColorControl), new PropertyMetadata(Colors.Transparent));
 
         public string ColorHex
         {

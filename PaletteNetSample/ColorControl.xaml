@@ -14,11 +14,21 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Rectangle
+        <StackPanel
             Grid.Column="0"
             Width="150"
             Height="60"
-            Fill="{x:Bind Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}" />
+            Background="{x:Bind Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+            Orientation="Vertical">
+            <TextBlock
+                FontSize="16"
+                Foreground="{x:Bind TitleColor, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+                Text="Title text" />
+            <TextBlock
+                FontSize="16"
+                Foreground="{x:Bind BodyColor, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+                Text="Body text" />
+        </StackPanel>
         <StackPanel
             Grid.Column="1"
             Width="150"
