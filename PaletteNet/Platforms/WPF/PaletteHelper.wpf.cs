@@ -35,40 +35,19 @@ namespace PaletteNet.Desktop
             DefaultColor = defaultColor.ToInt();
         }
 
-        public Color GetDominantColor()
-        {
-            return (Palette.DominantColor ?? DefaultColor).ToColor();
-        }
+        public Color DominantColor => (Palette.DominantColor ?? DefaultColor).ToColor();
 
-        public Color GetVibrantColor()
-        {
-            return (Palette.VibrantColor ?? DefaultColor).ToColor();
-        }
+        public Color VibrantColor => (Palette.VibrantColor ?? DefaultColor).ToColor();
 
-        public Color GetLightVibrantColor()
-        {
-            return (Palette.LightVibrantColor ?? DefaultColor).ToColor();
-        }
+        public Color LightVibrantColor => (Palette.LightVibrantColor ?? DefaultColor).ToColor();
 
-        public Color GetDarkVibrantColor()
-        {
-            return (Palette.DarkVibrantColor ?? DefaultColor).ToColor();
-        }
+        public Color DarkVibrantColor => (Palette.DarkVibrantColor ?? DefaultColor).ToColor();
 
-        public Color GetMutedColor()
-        {
-            return (Palette.MutedColor ?? DefaultColor).ToColor();
-        }
+        public Color MutedColor => (Palette.MutedColor ?? DefaultColor).ToColor();
 
-        public Color GetLightMutedColor()
-        {
-            return (Palette.LightMutedColor ?? DefaultColor).ToColor();
-        }
+        public Color LightMutedColor => (Palette.LightMutedColor ?? DefaultColor).ToColor();
 
-        public Color GetDarkMutedColor()
-        {
-            return (Palette.DarkMutedColor ?? DefaultColor).ToColor();
-        }
+        public Color DarkMutedColor => (Palette.DarkMutedColor ?? DefaultColor).ToColor();
 
         public IEnumerable<Color> GetAllColors()
         {
