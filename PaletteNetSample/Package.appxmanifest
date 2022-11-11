@@ -11,7 +11,7 @@
   <Identity
     Name="60490polApki.PaletteNetSampleApp"
     Publisher="CN=EFEE17C1-DC2A-4553-8CE6-82B55CBC72FE"
-    Version="1.0.0.0" />
+    Version="1.1.0.0" />
 
   <Properties>
     <DisplayName>PaletteNet Sample App</DisplayName>
