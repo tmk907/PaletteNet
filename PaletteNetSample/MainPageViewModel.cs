@@ -21,15 +21,15 @@ namespace PaletteNetSample
 
             var palette = PaletteNet.Windows.PaletteColors.Generate(new BitmapDecoderHelper(decoder));
 
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetDominantSwatch(), "Dominant"));
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetLightVibrantSwatch(), "Light Vibrant"));
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetVibrantSwatch(), "Vibrant"));
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetDarkVibrantSwatch(), "Dark Vibrant"));
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetLightMutedSwatch(), "Light Muted"));
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetMutedSwatch(), "Muted"));
-            PaletteColors.Add(CreateColorItem(palette.Palette.GetDarkMutedSwatch(), "Dark Muted"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.DominantSwatch, "Dominant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.LightVibrantSwatch, "Light Vibrant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.VibrantSwatch, "Vibrant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.DarkVibrantSwatch, "Dark Vibrant"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.LightMutedSwatch, "Light Muted"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.MutedSwatch, "Muted"));
+            PaletteColors.Add(CreateColorItem(palette.Palette.DarkMutedSwatch, "Dark Muted"));
 
-            foreach(var swatch in palette.Palette.GetSwatches())
+            foreach(var swatch in palette.Palette.Swatches)
             {
                 AllColors.Add(CreateColorItem(swatch, ""));
             }
@@ -39,9 +39,9 @@ namespace PaletteNetSample
         {
             return new ColorItem
             {
-                Color = (swatch?.GetRgb() ?? 0).ToColor(),
-                TitleColor = (swatch?.GetTitleTextColor() ?? 0).ToColor(),
-                BodyColor = (swatch?.GetBodyTextColor() ?? 0).ToColor(),
+                Color = (swatch?.Rgb ?? 0).ToColor(),
+                TitleColor = (swatch?.TitleTextColor ?? 0).ToColor(),
+                BodyColor = (swatch?.BodyTextColor ?? 0).ToColor(),
                 Description = description
             };
         }
