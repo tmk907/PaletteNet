@@ -71,7 +71,7 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 		<Compile Include="Platforms\Android\*.*.cs" />
 		<PackageReference Include="Xamarin.AndroidX.AppCompat">
-			<Version>1.5.1.1</Version>
+			<Version>1.6.1.6</Version>
 		</PackageReference>
 	</ItemGroup>
 	
