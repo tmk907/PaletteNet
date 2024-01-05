@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net6.0-android;net6.0-windows10.0.19041.0;netstandard2.0;net48</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;net8.0-android;net6.0-windows10.0.19041.0;netstandard2.0;net48</TargetFrameworks>
 	  <Nullable>enable</Nullable>
 	  <LangVersion>8.0</LangVersion>
 	  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -68,7 +68,7 @@
 	</ItemGroup>
   
 	<!-- Android -->
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 		<Compile Include="Platforms\Android\*.*.cs" />
 		<PackageReference Include="Xamarin.AndroidX.AppCompat">
 			<Version>1.5.1.1</Version>
