@@ -13,7 +13,7 @@
 	<PropertyGroup>
 		<PackageId>PaletteNet</PackageId>
 		<Product>PaletteNet</Product>
-		<Version>3.0.0</Version>
+		<Version>3.0.1</Version>
 		<PackageOutputPath>$(SolutionDir)nupkg</PackageOutputPath>
 		<Title>PaletteNet</Title>
 		<Authors>Tomasz Walecki</Authors>
